@@ -5,31 +5,31 @@ type Books {
         quantity: Int
         publisher_id: Int
         publisher: Publishers!
-    }
-    type Publishers {
-        id: Int!
-        name: String
-        year_publication: Int
-    }
-    type Readers {
-        id: Int!
-        name: String
-        email: String
-        password: String
-        address: String
-        phone: String
-    }
-    type CheckedOut {
-        id: Int!
-        isbn_book: Int
-        book: [Books!]!
-        reader_id: Int
-        reader: [Readers!]!
-        checkedout_date: String
-        returned: Boolean
-        returned_date: String
-        duration: Int
-    }
-    type Query {
-        book: [Books]
-    }
+}
+type Publishers {
+    id: Int!
+    name: String
+    year_publication: Int
+}
+type Readers {
+    id: Int!
+    name: String
+    email: String
+    password: String
+    address: String
+    phone: String
+}
+type CheckedOut {
+    id: Int!
+    isbn_book: Int
+    book: [Books!]!
+    reader_id: Int
+    reader: [Readers!]!
+    checkedout_date: String
+    returned: Boolean
+    returned_date: String
+    duration: Int
+}
+type Query {
+    book: [Books]
+}
