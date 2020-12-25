@@ -15,8 +15,8 @@ model Books {
   title String
   price Float
   quantity Int
-  publisher Publishers @relation(fields: [publisher_id], references:[id])
-  publisher_id Int
+  publisher Publishers? @relation(fields: [publisher_id], references:[id])
+  publisher_id Int?
   checkedout CheckedOut[]
 }
 

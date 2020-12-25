@@ -10,6 +10,7 @@ type Publishers {
     id: Int!
     name: String
     year_publication: Int
+    books: [Books!]!
 }
 type Readers {
     id: Int!
@@ -33,7 +34,7 @@ type CheckedOut {
 
 type AuthPayload {
     token: String
-    user: Readers
+    reader: Readers
 }
 
 type Query {
@@ -41,6 +42,7 @@ type Query {
 }
 
 type Mutation {
+    post(title: String!, price: Float, publisher_id: Int, quantity: Int): Books
     signup(name: String!, email: String!, password: String!, address: String, phone: String): AuthPayload
     login(email: String!, password: String!): AuthPayload
 }

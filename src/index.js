@@ -28,8 +28,13 @@ const server = new ApolloServer({
         'utf8'
     ),
     resolvers,
-    context: {
-        prisma,
+    context: ({ req }) => {
+        return {
+            ...req,
+            prisma,
+            readerId:
+                req && req.headers.authorization ? getReaderId(req) : null
+        }
     }
 })
 
