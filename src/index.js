@@ -8,12 +8,16 @@ import path from 'path'
 
 import Query from './resolvers/Query'
 import Books from './resolvers/Books'
+import Mutation from './resolvers/Mutation'
+import CheckedOut from './resolvers/CheckedOut'
 
 const app = express()
 
 const resolvers = {
     Query,
+    Mutation,
     Books,
+    CheckedOut,
 }
 
 const prisma = new PrismaClient()
