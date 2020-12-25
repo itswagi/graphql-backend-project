@@ -1,3 +1,5 @@
+import dotenv from 'dotenv'
+dotenv.config()
 import { PrismaClient } from '@prisma/client'
 import { ApolloServer } from 'apollo-server-express'
 import express from 'express'
@@ -29,6 +31,6 @@ const server = new ApolloServer({
 
 server.applyMiddleware({app})
 
-app.listen({port: 4000}, () => {
-    console.log(`Server listening at http://localhost:4000${server.graphqlPath}`)
+app.listen(process.env.PORT, () => {
+    console.log(`Server listening at http://localhost:${process.env.PORT}${server.graphqlPath}`)
 })
