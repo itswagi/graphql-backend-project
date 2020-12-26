@@ -1,38 +1,44 @@
+import { ApolloError, ApolloServer } from 'apollo-server-express'
 import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken'
-import { APP_SECRET, getReaderId } from '../utils'
+const { APP_SECRET, getUserId } = require('../utils')
 
-const signup = async (parent, args, context) => {
+async function signup(parent, args, context, info) {
     const password = await bcrypt.hash(args.password, 10)
-    const reader = await context.prisma.readers.create({
-        data: {...args, password}
-    })
-    const token = jwt.sign({readerId: reader.id}, process.env.APP_SECRET)
-
-    return { token, reader}
-}
-
-const login = async (parent, args, context) => {
-    const reader = await context.prisma.readers.findUnique({
-        where: {
-            email: args.email
-        }
-    })
-    if (!reader){
-        throw new Error('No such user found')
+  
+    const user = await context.prisma.readers.create({ data: { ...args, password } })
+  
+    const token = jwt.sign({ userId: user.id }, APP_SECRET)
+  
+    return {
+      token,
+      user,
     }
+  }
+  
+  async function login(parent, args, context, info) {
+    const user = await context.prisma.readers.findUnique({ where: { email: args.email } })
+    if (!user) {
+      throw new Error('No such user found')
+    }
+  
     const valid = await bcrypt.compare(args.password, user.password)
-    if(!valid){
-        throw new Error('Invalid Password')
+    if (!valid) {
+      throw new Error('Invalid password')
     }
-    const token = jwt.sign({readerId: reader.id}, process.env.APP_SECRET)
+  
+    const token = jwt.sign({ userId: user.id }, APP_SECRET)
 
-    return { token, reader }
+    return {
+      token,
+      user,
+    }
 }
+  
 
-const post = async (parent, args, context, info) => {
-    console.log('hit')
-    console.log(args)
+const createBook = async (parent, args, context, info) => {
+    const { userId } = context
+
     return await context.prisma.books.create({
         data: {
             title: args.title,
@@ -47,5 +53,34 @@ const post = async (parent, args, context, info) => {
     })
 }
 
+const updateBook = async (parent, args, context, info) => {
+    try{
+        const {isbn, publisher_id, ...values} = args
 
-export default { signup, login, post }
+        if(!isbn) 
+            throw new ApolloError("Missing ISBN value")
+
+        if(publisher_id)
+            values.publisher = { connect: { id: publisher_id}}
+
+        if(Object.keys(values).length === 0)
+            throw new ApolloError("Missing attributes")
+
+        return await context.prisma.books.update({
+            where: {
+                isbn: isbn
+            },
+            data: values
+        })
+    } catch(err){
+        //console.log(err.meta.details.split(":")[1])
+        return err
+    }
+}
+
+export default {
+    signup,
+    login,
+    createBook,
+    updateBook,
+}

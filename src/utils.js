@@ -1,25 +1,30 @@
-import jwt from 'jsonwebtoken'
-const APP_SECRET = "graphqlfullstack"
+const jwt = require('jsonwebtoken');
+const APP_SECRET = 'GraphQL-is-aw3some';
 
-const getTokenPayload = (token) => jwt.verify(token, APP_SECRET)
-
-const getReaderId = (req, authToken) => {
-    if(req){
-        const authHeader = req.headers.authorization
-        if(authHeader) {
-            const token = authHeader.replace('Bearer ', '')
-            if(!token){
-                throw new Error('No token found!')
-            }
-            const {readerId} = getTokenPayload(token)
-            return readerId
-        }
-    } else if (authToken){
-        const {readerId} = getTokenPayload(authToken)
-        return readerId
-    }
-
-    throw new Error('Not authenticated')
+function getTokenPayload(token) {
+  return jwt.verify(token, APP_SECRET);
 }
 
-export default { APP_SECRET, getReaderId}
+function getUserId(req, authToken) {
+  if (req) {
+    const authHeader = req.headers.authorization;
+    if (authHeader) {
+      const token = authHeader.replace('Bearer ', '');
+      if (!token) {
+        throw new Error('No token found');
+      }
+      const { userId } = getTokenPayload(token);
+      return userId;
+    }
+  } else if (authToken) {
+    const { userId } = getTokenPayload(authToken);
+    return userId;
+  }
+
+  throw new Error('Not authenticated');
+}
+
+module.exports = {
+  APP_SECRET,
+  getUserId
+};
