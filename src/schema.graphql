@@ -43,7 +43,9 @@ type Query {
     allBooks: [Books]
     findBookById(isbn: Int!): Books
     allPublishers: [Publishers]
+    findPublisherById(id: Int!): Publishers
     allCheckedOut: [CheckedOut]
+    findCheckedOutById(id: Int!): CheckedOut
 }
 
 
