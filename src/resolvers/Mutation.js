@@ -96,7 +96,7 @@ const createPublisher = async (parent, args, context) => {
                 ...args
             }
         })
-    }catch(err){
+    } catch(err){
         return err
     }
 }
@@ -116,7 +116,7 @@ const updatePublisher = async (parent, args, context) => {
                 ...values
             }
         })
-    }catch(err){
+    } catch(err){
         return err
     }
 }
@@ -133,6 +133,48 @@ const deletePublisher = async (parent, args, context) => {
     }
 }
 
+const createCheckedOut = async (parent, args, context) => {
+    try{
+        const {book_isbn, reader_id, ...values} = args
+        // if(Object.keys(values).length === 0)
+        //     throw new ApolloError("Missing attributes")
+        return await context.prisma.checkedOut.create({
+            data: {
+                book: {
+                    connect: {
+                        isbn: book_isbn
+                    }
+                },
+                reader: {
+                    connect: {
+                        id: reader_id
+                    }
+                },
+                ...values,
+            }
+        })
+    } catch(err){
+        return err
+    }
+}
+
+const updateCheckedOut = async (parent, args, context) => {
+    try{
+
+    } catch(err){
+        return err
+    }
+}
+
+const deleteCheckedOut = async (parent, args, context) => {
+    try{
+
+    } catch(err){
+
+    }
+}
+
+
 export default {
     signup,
     login,
@@ -142,4 +184,7 @@ export default {
     createPublisher,
     updatePublisher,
     deletePublisher,
+    createCheckedOut,
+    updateCheckedOut,
+    deleteCheckedOut
 }

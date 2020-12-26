@@ -1,5 +1,4 @@
 const books = async (parent, args, context) => {
-    console.log('1')
     console.log(parent)
     return await context.prisma.books.findUnique({
         where: {
@@ -9,7 +8,6 @@ const books = async (parent, args, context) => {
 }
 
 const readers = async (parent, args, context) => {
-    console.log('2')
     return await context.prisma.readers.findUnique({
         where: {
             id: parent.reader_id
