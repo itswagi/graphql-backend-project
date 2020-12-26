@@ -38,6 +38,7 @@ const server = new ApolloServer({
               : null
         };
     },
+    introspection: true,
     playground: true,
 })
 
