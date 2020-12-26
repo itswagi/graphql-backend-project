@@ -52,11 +52,16 @@ type Query {
 type Mutation {
     signup(email: String!, password: String!, name: String!, address:String!, phone: String!): AuthPayload
     login(email: String!, password: String!): AuthPayload
+
     createBook(title: String!, price: Float, publisher_id: Int, quantity: Int): Books
     updateBook(isbn: Int!, publisher_id: Int, title: String, price: Float, quantity: Int): Books
     deleteBook(isbn: Int!): Books
+
     createPublisher(name: String!, year_publication: Int!): Publishers
     updatePublisher(id: Int!, name: String, year_publication: Int): Publishers
     deletePublisher(id: Int!): Publishers
 
+    createCheckedOut(book_isbn: Int!, reader_id: Int!, checkedout_date: String, returned: Boolean, returned_date: String, duration: Int): CheckedOut
+    updateCheckedOut(id: Int!, returned: Boolean, returned_date: String): CheckedOut
+    deleteCheckedOut(id: Int!): CheckedOut
 }
