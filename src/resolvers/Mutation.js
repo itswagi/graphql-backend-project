@@ -123,7 +123,11 @@ const updatePublisher = async (parent, args, context) => {
 
 const deletePublisher = async (parent, args, context) => {
     try{
-
+        return await context.prisma.publishers.delete({
+            where: {
+                id: args.id
+            }
+        })
     }catch(err){
         return err
     }
