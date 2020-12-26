@@ -4,7 +4,7 @@ CREATE TABLE "Books" (
     "title" TEXT NOT NULL,
     "price" DECIMAL(65,30) NOT NULL,
     "quantity" INTEGER NOT NULL,
-    "publisher_id" INTEGER NOT NULL,
+    "publisher_id" INTEGER,
 
     PRIMARY KEY ("isbn")
 );
@@ -35,16 +35,19 @@ CREATE TABLE "CheckedOut" (
 "id" SERIAL,
     "book_isbn" INTEGER NOT NULL,
     "reader_id" INTEGER NOT NULL,
-    "checkout_date" TIMESTAMP(3),
-    "returned" BOOLEAN NOT NULL,
-    "returned_date" TIMESTAMP(3),
+    "checkout_date" TEXT,
+    "returned" BOOLEAN NOT NULL DEFAULT false,
+    "returned_date" TEXT,
     "duration" INTEGER,
 
     PRIMARY KEY ("id")
 );
 
+-- CreateIndex
+CREATE UNIQUE INDEX "Readers.email_unique" ON "Readers"("email");
+
 -- AddForeignKey
-ALTER TABLE "Books" ADD FOREIGN KEY("publisher_id")REFERENCES "Publishers"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "Books" ADD FOREIGN KEY("publisher_id")REFERENCES "Publishers"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "CheckedOut" ADD FOREIGN KEY("book_isbn")REFERENCES "Books"("isbn") ON DELETE CASCADE ON UPDATE CASCADE;
