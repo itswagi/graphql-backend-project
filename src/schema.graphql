@@ -51,6 +51,6 @@ type Mutation {
     updateBook(isbn: Int!, publisher_id: Int, title: String, price: Float, quantity: Int): Books
     deleteBook(isbn: Int!): Books
     createPublisher(name: String!, year_publication: Int!): Publishers
-    updatePublisher(id: Int!, name: String, year_publication: Int!): Publishers
+    updatePublisher(id: Int!, name: String, year_publication: Int): Publishers
     deletePublisher(id: Int!): Publishers
 }

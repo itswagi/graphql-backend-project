@@ -57,9 +57,6 @@ const updateBook = async (parent, args, context, info) => {
     try{
         const {isbn, publisher_id, ...values} = args
 
-        if(!isbn) 
-            throw new ApolloError("Missing ISBN value")
-
         if(publisher_id)
             values.publisher = { connect: { id: publisher_id}}
 
@@ -106,7 +103,19 @@ const createPublisher = async (parent, args, context) => {
 
 const updatePublisher = async (parent, args, context) => {
     try{
+        const {id, ...values} = args
 
+        if(Object.keys(values).length === 0)
+            throw new ApolloError("Missing attributes")
+        
+        return await context.prisma.publishers.update({
+            where: {
+                id: id
+            },
+            data: {
+                ...values
+            }
+        })
     }catch(err){
         return err
     }
