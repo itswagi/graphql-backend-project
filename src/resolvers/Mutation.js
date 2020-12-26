@@ -92,10 +92,41 @@ const deleteBook = async (parent, args, context, info) => {
     }
 }
 
+const createPublisher = async (parent, args, context) => {
+    try{
+        return await context.prisma.publishers.create({
+            data: {
+                ...args
+            }
+        })
+    }catch(err){
+        return err
+    }
+}
+
+const updatePublisher = async (parent, args, context) => {
+    try{
+
+    }catch(err){
+        return err
+    }
+}
+
+const deletePublisher = async (parent, args, context) => {
+    try{
+
+    }catch(err){
+        return err
+    }
+}
+
 export default {
     signup,
     login,
     createBook,
     updateBook,
     deleteBook,
+    createPublisher,
+    updatePublisher,
+    deletePublisher,
 }
