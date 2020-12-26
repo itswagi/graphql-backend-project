@@ -1,3 +1,5 @@
+
+
 const publisher = async (parent, args, context) => {
     return await context.prisma.publishers.findUnique({
         where: {
@@ -8,5 +10,5 @@ const publisher = async (parent, args, context) => {
 
 
 export default {
-    publisher
+    publisher,
 }

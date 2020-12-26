@@ -38,14 +38,16 @@ type AuthPayload {
 }
 
 type Query {
-    book: [Books]
+    allBooks: [Books]
     findBookById(isbn: Int!): Books
+    allPublishers: [Publishers]
 }
 
 
 type Mutation {
     createBook(title: String!, price: Float, publisher_id: Int, quantity: Int): Books
     updateBook(isbn: Int!, publisher_id: Int, title: String, price: Float, quantity: Int): Books
+    deleteBook(isbn: Int!): Books
     signup(email: String!, password: String!, name: String!, address:String!, phone: String!): AuthPayload
     login(email: String!, password: String!): AuthPayload
 }

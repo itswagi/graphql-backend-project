@@ -1,4 +1,4 @@
-import { ApolloError, ApolloServer } from 'apollo-server-express'
+import { ApolloError } from 'apollo-server-express'
 import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken'
 const { APP_SECRET, getUserId } = require('../utils')
@@ -78,9 +78,24 @@ const updateBook = async (parent, args, context, info) => {
     }
 }
 
+const deleteBook = async (parent, args, context, info) => {
+    try{
+        if(!args.isbn)
+            throw new ApolloError('Missing ISBN value')
+        return await context.prisma.books.delete({
+            where: {
+                isbn: args.isbn
+            }
+        })
+    } catch(err){
+        return err
+    }
+}
+
 export default {
     signup,
     login,
     createBook,
     updateBook,
+    deleteBook,
 }
