@@ -34,6 +34,7 @@ model Readers {
   password String
   address String
   phone String
+  checkout CheckedOut[]
 }
 
 model CheckedOut {

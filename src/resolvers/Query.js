@@ -35,8 +35,17 @@ const allPublishers = async (parent, args, context) => {
     }
 }
 
+const allCheckedOut = async (parent, args, context) => {
+    try{
+        return await context.prisma.checkedOut.findMany()
+    } catch(err){
+        return err
+    }
+}
+
 export default {
     allBooks,
     findBookById,
-    allPublishers
+    allPublishers,
+    allCheckedOut
 }

@@ -5,6 +5,7 @@ type Books {
         quantity: Int
         publisher_id: Int
         publisher: Publishers!
+        checkedOut: [CheckedOut]!
 }
 type Publishers {
     id: Int!
@@ -19,13 +20,14 @@ type Readers {
     password: String
     address: String
     phone: String
+    checkedOut: [CheckedOut]!
 }
 type CheckedOut {
     id: Int!
     isbn_book: Int
-    book: [Books!]!
+    books: Books!
     reader_id: Int
-    reader: [Readers!]!
+    readers: Readers!
     checkedout_date: String
     returned: Boolean
     returned_date: String
@@ -41,6 +43,7 @@ type Query {
     allBooks: [Books]
     findBookById(isbn: Int!): Books
     allPublishers: [Publishers]
+    allCheckedOut: [CheckedOut]
 }
 
 
@@ -53,4 +56,5 @@ type Mutation {
     createPublisher(name: String!, year_publication: Int!): Publishers
     updatePublisher(id: Int!, name: String, year_publication: Int): Publishers
     deletePublisher(id: Int!): Publishers
+
 }
