@@ -136,8 +136,6 @@ const deletePublisher = async (parent, args, context) => {
 const createCheckedOut = async (parent, args, context) => {
     try{
         const {book_isbn, reader_id, ...values} = args
-        // if(Object.keys(values).length === 0)
-        //     throw new ApolloError("Missing attributes")
         return await context.prisma.checkedOut.create({
             data: {
                 book: {
@@ -160,7 +158,17 @@ const createCheckedOut = async (parent, args, context) => {
 
 const updateCheckedOut = async (parent, args, context) => {
     try{
-
+        const {id, ...values} = args
+        if(Object.keys(values).length === 0)
+            throw new ApolloError("Missing attributes")
+        return await context.prisma.checkedOut.update({
+            where: {
+                id: id
+            },
+            data: {
+                ...values
+            }
+        })
     } catch(err){
         return err
     }
@@ -168,9 +176,13 @@ const updateCheckedOut = async (parent, args, context) => {
 
 const deleteCheckedOut = async (parent, args, context) => {
     try{
-
+        return await context.prisma.checkedOut.delete({
+            where: {
+                id: args.id
+            }
+        })
     } catch(err){
-
+        return err
     }
 }
 
