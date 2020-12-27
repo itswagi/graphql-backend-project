@@ -161,7 +161,7 @@ const createCheckedOut = async (parent, args, context) => {
             },
             include: {
                 book: true,
-                reader: true
+                reader: true,
             }
         })
     } catch(err){
