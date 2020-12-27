@@ -1,14 +1,15 @@
 
 
-const publisher = async (parent, args, context) => {
-    return await context.prisma.publishers.findUnique({
-        where: {
-            id: parent.publisher_id
-        }
-    })
-}
+// const publisher = async (parent, args, context) => {
+//     console.log('2')
+//     return await context.prisma.publishers.findUnique({
+//         where: {
+//             id: parent.publisher_id
+//         }
+//     })
+// }
 
 
-export default {
-    publisher,
-}
+// export default {
+//     publisher,
+// }

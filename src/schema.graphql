@@ -25,9 +25,9 @@ type Readers {
 type CheckedOut {
     id: Int!
     isbn_book: Int
-    books: Books!
+    book: Books!
     reader_id: Int
-    readers: Readers!
+    reader: Readers!
     checkedout_date: String
     returned: Boolean
     returned_date: String

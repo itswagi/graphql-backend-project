@@ -1,0 +1,6 @@
+1. heroku login
+2. heroku apps:create your-app-name
+3. heroku addons:create heroku-postgresql:hobby-dev
+4. change .env variables
+5. npx prisma migrate deploy --preview-feature
+6. git push heroku main

@@ -2,8 +2,13 @@ import { ApolloError } from 'apollo-server'
 import { APP_SECRET, getReaderId } from '../utils'
 
 const allBooks = async (parent, args, context) => {
+    console.log('1')
     try{
-        return await context.prisma.books.findMany()
+        return await context.prisma.books.findMany({
+            include: {
+                publisher: true
+            }
+        })
     }catch(err){
         return err
     }
@@ -14,6 +19,9 @@ const findBookById = async (parent, args, context) => {
         const book = await context.prisma.books.findUnique({
             where: {
                 isbn: args.isbn
+            },
+            include: {
+                publisher: true
             }
         })
         if(!book){
@@ -49,7 +57,12 @@ const findPublisherById = async (parent, args, context) => {
 
 const allCheckedOut = async (parent, args, context) => {
     try{
-        return await context.prisma.checkedOut.findMany()
+        return await context.prisma.checkedOut.findMany({
+            include: {
+                book: true,
+                reader: true
+            }
+        })
     } catch(err){
         return err
     }
@@ -60,6 +73,10 @@ const findCheckedOutById = async (parent, args, context) => {
         return await context.prisma.checkedOut.findUnique({
             where: {
                 id: args.id
+            },
+            include: {
+                book: true,
+                reader: true
             }
         })
     }catch(err){

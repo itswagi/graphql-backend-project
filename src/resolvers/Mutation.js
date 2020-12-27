@@ -49,6 +49,9 @@ const createBook = async (parent, args, context, info) => {
                     id: args.publisher_id
                 }
             }
+        },
+        include: {
+            publisher: true
         }
     })
 }
@@ -67,7 +70,10 @@ const updateBook = async (parent, args, context, info) => {
             where: {
                 isbn: isbn
             },
-            data: values
+            data: values,
+            include: {
+                publisher: true
+            }
         })
     } catch(err){
         //console.log(err.meta.details.split(":")[1])
@@ -82,6 +88,9 @@ const deleteBook = async (parent, args, context, info) => {
         return await context.prisma.books.delete({
             where: {
                 isbn: args.isbn
+            },
+            include: {
+                publisher: true
             }
         })
     } catch(err){
@@ -149,6 +158,10 @@ const createCheckedOut = async (parent, args, context) => {
                     }
                 },
                 ...values,
+            },
+            include: {
+                book: true,
+                reader: true
             }
         })
     } catch(err){
@@ -167,6 +180,10 @@ const updateCheckedOut = async (parent, args, context) => {
             },
             data: {
                 ...values
+            },
+            include: {
+                book: true,
+                reader: true
             }
         })
     } catch(err){
@@ -179,6 +196,10 @@ const deleteCheckedOut = async (parent, args, context) => {
         return await context.prisma.checkedOut.delete({
             where: {
                 id: args.id
+            },
+            include: {
+                book: true,
+                reader: true
             }
         })
     } catch(err){
