@@ -118,5 +118,29 @@ describe('Publishers', () => {
         }
         expect(result.data.findPublisherById).toEqual(expected)
     })
+
+    it('Updates publisher', async () => {
+        const testMutation = gql`
+            mutation{
+                updatePublisher(id: ${id}, name: "Publisher Updated"){
+                    id
+                    name
+                    year_publication
+                }
+            }
+        `
+        const result = await mutate({
+            mutation: testMutation
+        })
+
+        const expected = {
+            id: id,
+            name: 'Publisher Updated',
+            year_publication: 2020
+        }
+
+        expect(result.data.updatePublisher).toEqual(expected)
+    })
+
 })
 
