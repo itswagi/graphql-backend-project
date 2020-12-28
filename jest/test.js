@@ -35,36 +35,7 @@ const server = new ApolloServer({
 const { query, mutate } = createTestClient(server)
 
 beforeAll( async () => {
-    // const connectionString = process.env.DATABASE_URL
-    // console.log(connectionString)
-    // const client = new Client({ connectionString })
 
-    // const querySeedPub = `
-    //     INSERT INTO "Publishers" (id, name, year_publication)
-    //     VALUES (1, 'Publisher 1', 2020), (2, 'Publisher 2', 2019), (3, 'Publisher 3', 2018);
-    // `
-    // const querySeedReader = `
-    //     INSERT INTO "Readers" (isbn, name, email, password, address, phone)
-    //     VALUES (1, 'Me 1', 'me1@me.com', '12345', 'home1', '0900'), (2, 'Me 2', 'me2@me.com', '12345', 'home2', '0900');
-    // `
-    // const querySeedBook = `
-    //     INSERT INTO "Books" (id, title, price, quantity, publisher_id)
-    //     VALUES (1, 'Book 1', 1.0, 1, 1), (2, 'Book 2', 2.0, 2, 2);
-    // `
-    // const querySeedCheck = `
-    //     INSERT INTO "CheckedOut" (id, book_isbn, reader_id, checkedout_date, returned, returned_date, duration)
-    //     VALUES (1, 1, 1, null, false, null, 1), (2, 2, 2, null, false, null, 1);
-    // `
-    // try{
-    //     await client.connect()
-    //     await client.query(querySeedPub)
-    //     await client.query(querySeedBook)
-    //     //await client.query(querySeedReader)
-    //     // await client.query(querySeedCheck)
-    //     client.end()
-    // } catch(error){
-    //     console.log(error)
-    // }
 })
 
 afterAll(async () => {
@@ -73,6 +44,30 @@ afterAll(async () => {
 
 describe('Publishers', () => {
     var id
+    beforeEach(async () => {
+        try{
+            const testRow = await prisma.publishers.create({
+                data: {
+                    name: "Publisher Test",
+                    year_publication: 2020
+                }
+            })
+            id = testRow.id
+        } catch(err){
+            return err
+        }
+    })
+    afterEach( async () => {
+        try{
+            const testRow = await prisma.publishers.delete({
+                where: {
+                    id: id
+                }
+            })
+        } catch(err){
+            return err
+        }
+    })
     it('Creates a publisher', async () => {
         
         const testMutation = gql`
@@ -93,8 +88,14 @@ describe('Publishers', () => {
             name: 'Publisher Test',
             year_publication: 2020
         }
-        id = result.data.createPublisher.id
+        //id = result.data.createPublisher.id
         expect(result.data.createPublisher).toEqual(expected)
+
+        await prisma.publishers.delete({
+            where: {
+                id: result.data.createPublisher.id
+            }
+        })
     })
 
     it('Gets a publisher by Id', async () => {
@@ -141,6 +142,8 @@ describe('Publishers', () => {
 
         expect(result.data.updatePublisher).toEqual(expected)
     })
+
+
 
 })
 
