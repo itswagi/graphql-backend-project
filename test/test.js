@@ -371,3 +371,23 @@ describe('Books', () => {
     })
 })
 
+describe('CheckedOut', () => {
+    beforeAll( async () => {
+
+    })
+    afterAll( async () => {
+        
+    })
+    it('Creates a CheckedOut', async () => {
+
+    })
+    it('Gets a CheckedOut by Id', async () => {
+
+    })
+    it('Updates a CheckedOut by Id', async () => {
+
+    })
+    it('Deletes a CheckedOut by Id', async () => {
+
+    })
+})
