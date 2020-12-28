@@ -294,11 +294,80 @@ describe('Books', () => {
     })
 
     it('Updates a book by Id', async () => {
-
+        const testMutation = gql`
+            mutation {
+                updateBook(isbn: ${idbook}, publisher_id: ${idpub}, title:"updated Book"){
+                    isbn
+                        title
+                        price
+                        quantity
+                        publisher {
+                            id
+                            name
+                            year_publication
+                        }
+                }
+            }
+        `
+        const result = await mutate({mutation: testMutation})
+        const expected = {
+            isbn: idbook,
+            title: 'updated Book',
+            price: 1.0,
+            quantity: 1,
+            publisher: {
+                id: idpub,
+                name: 'Publisher Test',
+                year_publication: 2020
+            }
+        }
+        expect(result.data.updateBook).toEqual(expected)
     })
 
     it('Deletes a book by Id', async () => {
+        const testRow = await prisma.books.create({
+            data: {
+                title: "Book Test",
+                price: 1.0,
+                quantity: 1,
+                publisher: {
+                    connect: {
+                        id: idpub
+                    }
+                }
+            }
+        })
 
+        const testMutation = gql`
+            mutation {
+                deleteBook(isbn: ${testRow.isbn}){
+                    isbn
+                    title
+                    price
+                    quantity
+                    publisher {
+                        id
+                        name
+                        year_publication
+                    }
+                }
+            }
+        `
+        const result = await mutate({ mutation: testMutation})
+
+        const expected = {
+            isbn: testRow.isbn,
+            title: 'Book Test',
+            price: 1.0,
+            quantity: 1,
+            publisher: {
+                id: idpub,
+                name: 'Publisher Test',
+                year_publication: 2020
+            }
+        }
+
+        expect(result.data.deleteBook).toEqual(expected)
     })
 })
 
