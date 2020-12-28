@@ -49,6 +49,7 @@ beforeAll( async () => {
             
         })
         idpub = testPubRow.id
+        
         const testBookRow = await prisma.books.create({
             data: {
                 title: "Book Test",
@@ -65,25 +66,35 @@ beforeAll( async () => {
         const testReaderRow = await prisma.readers.create({
             data: {
                 name: "Test Reader",
-                email: null,
-                password: null,
-                address: null,
-                phone: null
+                email: "",
+                password: "",
+                address: "",
+                phone: ""
             }
         })
         idreader = testReaderRow.id
         const testCheckedRow = await prisma.checkedOut.create({
             data: {
-                book_isbn: idbook,
-                reader_id: idreader,
-                checkout_date: null,
+                book: {
+                    connect: {
+                        isbn: idbook
+                    }
+                },
+                reader: {
+                    connect: {
+                        id: idreader
+                    }
+                },
+                checkout_date: "",
                 returned: false,
-                returned_date: null,
-                duration: null,
+                returned_date: "",
+                duration: 1,
             }    
         })
+        idchecked = testCheckedRow.id
+        console.log(idchecked)
     } catch(err){
-        return err
+        console.log(err)
     }
 })
 afterAll( async () => {
@@ -100,11 +111,10 @@ afterAll( async () => {
         await prisma.readers.delete({
             where: { id: idreader }
         })
+        await prisma.$disconnect()
     } catch(err){
-        return err
+        console.log(err)
     }
-
-    await prisma.$disconnect()
 })
 
 
@@ -385,14 +395,60 @@ describe('Books', () => {
 })
 
 describe('CheckedOut', () => {
-    beforeAll( async () => {
-
-    })
-    afterAll( async () => {
-
-    })
     it('Creates a CheckedOut', async () => {
+        const testMutation = gql`
+            mutation{
+                createCheckedOut(book_isbn: ${idbook}, reader_id: ${idreader}){
+                    id
+                    book {
+                        isbn
+                        title
+                        price
+                        publisher {
+                            id
+                            name
+                            year_publication
+                        }
+                    }
+                    reader {
+                        id
+                        name
+                        email
+                    }
+                    checkout_date
+                    returned_date
+                    returned
+                    duration
+                    }
+                }
+        `
 
+        const result = await mutate({ mutation: testMutation})
+        console.log(result)
+        const expected = {
+            id: result.data.createCheckedOut.id,
+            book: {
+                isbn: idbook,
+                title: "Book Test",
+                price: 1.0,
+                publisher: {
+                    id: idpub,
+                    name: "Test Publisher",
+                    year_publication: 2020
+                }
+            },
+            reader: {
+                id: idreader,
+                name: "Test Reader",
+                email: ""
+            },
+            checkout_date: "",
+            returned_date: "",
+            returned: false,
+            duration: 1
+        }
+
+        expect(result.data.createCheckedOut).toEqual(result)
     })
     it('Gets a CheckedOut by Id', async () => {
 

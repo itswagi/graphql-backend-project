@@ -28,7 +28,7 @@ type CheckedOut {
     book: Books!
     reader_id: Int
     reader: Readers!
-    checkedout_date: String
+    checkout_date: String
     returned: Boolean
     returned_date: String
     duration: Int
