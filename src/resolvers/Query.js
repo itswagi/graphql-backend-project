@@ -2,7 +2,6 @@ import { ApolloError } from 'apollo-server'
 import { APP_SECRET, getReaderId } from '../utils'
 
 const allBooks = async (parent, args, context) => {
-    console.log('1')
     try{
         return await context.prisma.books.findMany({
             include: {
