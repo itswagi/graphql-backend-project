@@ -194,12 +194,12 @@ describe('Books', () => {
                     quantity: 1,
                     publisher: {
                         connect: {
-                            id: idPub
+                            id: idpub
                         }
                     }
                 }
             })
-            idbook = testBookRow.id
+            idbook = testBookRow.isbn
         } catch(err){
             return err
         }
@@ -262,6 +262,34 @@ describe('Books', () => {
     })
 
     it('Gets a book by Id', async () => {
+        const testQuery = gql`
+            query {
+                findBookById(isbn: ${idbook}){
+                    isbn
+                    title
+                    price
+                    quantity
+                    publisher {
+                        id
+                        name
+                        year_publication
+                    }
+                }
+            }
+        `
+        const result = await query({ query: testQuery})
+        const expected = {
+            isbn: idbook,
+            title: 'Book Test',
+            price: 1.0,
+            quantity: 1,
+            publisher: {
+                id: idpub,
+                name: 'Publisher Test',
+                year_publication: 2020
+            }
+        }
+        expect(result.data.findBookById).toEqual(expected)
 
     })
 
