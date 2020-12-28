@@ -160,7 +160,11 @@ const createCheckedOut = async (parent, args, context) => {
                 ...values,
             },
             include: {
-                book: true,
+                book: {
+                    include: {
+                        publisher: true
+                    }
+                },
                 reader: true,
             }
         })
@@ -182,7 +186,11 @@ const updateCheckedOut = async (parent, args, context) => {
                 ...values
             },
             include: {
-                book: true,
+                book: {
+                    include: {
+                        publisher: true
+                    }
+                },
                 reader: true
             }
         })
@@ -198,7 +206,11 @@ const deleteCheckedOut = async (parent, args, context) => {
                 id: args.id
             },
             include: {
-                book: true,
+                book: {
+                    include: {
+                        publisher: true
+                    }
+                },
                 reader: true
             }
         })

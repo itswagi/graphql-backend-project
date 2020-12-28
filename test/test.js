@@ -92,29 +92,25 @@ beforeAll( async () => {
             }    
         })
         idchecked = testCheckedRow.id
-        console.log(idchecked)
     } catch(err){
-        console.log(err)
+        return err
     }
 })
 afterAll( async () => {
-    try{
         await prisma.checkedOut.delete({
             where: { id: idchecked }
         })
         await prisma.books.delete({
             where: { isbn: idbook }
         })
-        await prisma.publishers.delete({
-            where: { id: idpub }
-        })
         await prisma.readers.delete({
             where: { id: idreader }
         })
+        await prisma.publishers.delete({
+            where: { id: idpub }
+        })
         await prisma.$disconnect()
-    } catch(err){
-        console.log(err)
-    }
+        
 })
 
 
@@ -424,7 +420,6 @@ describe('CheckedOut', () => {
         `
 
         const result = await mutate({ mutation: testMutation})
-        console.log(result)
         const expected = {
             id: result.data.createCheckedOut.id,
             book: {
@@ -433,7 +428,7 @@ describe('CheckedOut', () => {
                 price: 1.0,
                 publisher: {
                     id: idpub,
-                    name: "Test Publisher",
+                    name: "Publisher Test",
                     year_publication: 2020
                 }
             },
@@ -442,13 +437,16 @@ describe('CheckedOut', () => {
                 name: "Test Reader",
                 email: ""
             },
-            checkout_date: "",
-            returned_date: "",
+            checkout_date: null,
+            returned_date: null,
             returned: false,
-            duration: 1
+            duration: null
         }
+        expect(result.data.createCheckedOut).toEqual(expected)
 
-        expect(result.data.createCheckedOut).toEqual(result)
+        await prisma.checkedOut.delete({
+            where: { id: result.data.createCheckedOut.id }
+        })
     })
     it('Gets a CheckedOut by Id', async () => {
 
