@@ -34,40 +34,81 @@ const server = new ApolloServer({
 })
 const { query, mutate } = createTestClient(server)
 
+var idpub
+var idbook
+var idreader
+var idchecked
+
 beforeAll( async () => {
-
+    try{
+        const testPubRow = await prisma.publishers.create({
+            data: {
+                name: "Publisher Test",
+                year_publication: 2020
+            }
+            
+        })
+        idpub = testPubRow.id
+        const testBookRow = await prisma.books.create({
+            data: {
+                title: "Book Test",
+                price: 1.0,
+                quantity: 1,
+                publisher: {
+                    connect: {
+                        id: idpub
+                    }
+                }
+            }
+        })
+        idbook = testBookRow.isbn
+        const testReaderRow = await prisma.readers.create({
+            data: {
+                name: "Test Reader",
+                email: null,
+                password: null,
+                address: null,
+                phone: null
+            }
+        })
+        idreader = testReaderRow.id
+        const testCheckedRow = await prisma.checkedOut.create({
+            data: {
+                book_isbn: idbook,
+                reader_id: idreader,
+                checkout_date: null,
+                returned: false,
+                returned_date: null,
+                duration: null,
+            }    
+        })
+    } catch(err){
+        return err
+    }
 })
+afterAll( async () => {
+    try{
+        await prisma.checkedOut.delete({
+            where: { id: idchecked }
+        })
+        await prisma.books.delete({
+            where: { isbn: idbook }
+        })
+        await prisma.publishers.delete({
+            where: { id: idpub }
+        })
+        await prisma.readers.delete({
+            where: { id: idreader }
+        })
+    } catch(err){
+        return err
+    }
 
-afterAll(async () => {
     await prisma.$disconnect()
 })
 
+
 describe('Publishers', () => {
-    var id
-    beforeAll(async () => {
-        try{
-            const testRow = await prisma.publishers.create({
-                data: {
-                    name: "Publisher Test",
-                    year_publication: 2020
-                }
-            })
-            id = testRow.id
-        } catch(err){
-            return err
-        }
-    })
-    afterAll( async () => {
-        try{
-            const testRow = await prisma.publishers.delete({
-                where: {
-                    id: id
-                }
-            })
-        } catch(err){
-            return err
-        }
-    })
     it('Creates a publisher', async () => {
         
         const testMutation = gql`
@@ -100,7 +141,7 @@ describe('Publishers', () => {
     it('Gets a publisher by Id', async () => {
         const testQuery = gql`
             query{
-                findPublisherById(id: ${id}){
+                findPublisherById(id: ${idpub}){
                     id
                     name
                     year_publication
@@ -108,11 +149,10 @@ describe('Publishers', () => {
             }
         `
         const result = await query({
-            query: testQuery,
-            variables: { id: 1}
+            query: testQuery
         })
         const expected = {
-            id: id,
+            id: idpub,
             name: 'Publisher Test',
             year_publication: 2020
         }
@@ -122,7 +162,7 @@ describe('Publishers', () => {
     it('Updates publisher by Id', async () => {
         const testMutation = gql`
             mutation{
-                updatePublisher(id: ${id}, name: "Publisher Updated"){
+                updatePublisher(id: ${idpub}, name: "Publisher Updated"){
                     id
                     name
                     year_publication
@@ -134,12 +174,21 @@ describe('Publishers', () => {
         })
 
         const expected = {
-            id: id,
+            id: idpub,
             name: 'Publisher Updated',
             year_publication: 2020
         }
 
         expect(result.data.updatePublisher).toEqual(expected)
+
+        await prisma.publishers.update({
+            where: {
+                id: idpub
+            },
+            data: {
+                name: "Publisher Test"
+            }
+        })
     })
     
     it('Deletes publisher by Id', async () => {
@@ -175,51 +224,6 @@ describe('Publishers', () => {
 })
 
 describe('Books', () => {
-    var idpub
-    var idbook
-    beforeAll( async () => {
-        try{
-            const testPubRow = await prisma.publishers.create({
-                data: {
-                    name: "Publisher Test",
-                    year_publication: 2020
-                }
-                
-            })
-            idpub = testPubRow.id
-            const testBookRow = await prisma.books.create({
-                data: {
-                    title: "Book Test",
-                    price: 1.0,
-                    quantity: 1,
-                    publisher: {
-                        connect: {
-                            id: idpub
-                        }
-                    }
-                }
-            })
-            idbook = testBookRow.isbn
-        } catch(err){
-            return err
-        }
-    })
-    afterAll( async () => {
-        try{
-            await prisma.books.delete({
-                where: {
-                    isbn: idbook
-                }
-            })
-            await prisma.publishers.delete({
-                where: {
-                    id: idpub
-                }
-            })
-        } catch(err){
-            return err
-        }
-    })
 
     it('Creates a book', async () => {
         const testMutation = gql`
@@ -322,6 +326,15 @@ describe('Books', () => {
             }
         }
         expect(result.data.updateBook).toEqual(expected)
+
+        await prisma.books.update({
+            where: {
+                isbn: idbook
+            },
+            data: {
+                title: "Book Test"
+            }
+        })
     })
 
     it('Deletes a book by Id', async () => {
@@ -376,7 +389,7 @@ describe('CheckedOut', () => {
 
     })
     afterAll( async () => {
-        
+
     })
     it('Creates a CheckedOut', async () => {
 
