@@ -44,7 +44,7 @@ afterAll(async () => {
 
 describe('Publishers', () => {
     var id
-    beforeEach(async () => {
+    beforeAll(async () => {
         try{
             const testRow = await prisma.publishers.create({
                 data: {
@@ -57,7 +57,7 @@ describe('Publishers', () => {
             return err
         }
     })
-    afterEach( async () => {
+    afterAll( async () => {
         try{
             const testRow = await prisma.publishers.delete({
                 where: {
@@ -172,6 +172,105 @@ describe('Publishers', () => {
 
         expect(result.data.deletePublisher).toEqual(expected)
     })
+})
 
+describe('Books', () => {
+    var idpub
+    var idbook
+    beforeAll( async () => {
+        try{
+            const testPubRow = await prisma.publishers.create({
+                data: {
+                    name: "Publisher Test",
+                    year_publication: 2020
+                }
+                
+            })
+            idpub = testPubRow.id
+            const testBookRow = await prisma.books.create({
+                data: {
+                    title: "Book Test",
+                    price: 1.0,
+                    quantity: 1,
+                    publisher: {
+                        connect: {
+                            id: idPub
+                        }
+                    }
+                }
+            })
+            idbook = testBookRow.id
+        } catch(err){
+            return err
+        }
+    })
+    afterAll( async () => {
+        try{
+            await prisma.books.delete({
+                where: {
+                    isbn: idbook
+                }
+            })
+            await prisma.publishers.delete({
+                where: {
+                    id: idpub
+                }
+            })
+        } catch(err){
+            return err
+        }
+    })
+
+    it('Creates a book', async () => {
+        const testMutation = gql`
+            mutation {
+                createBook(title: "Book Test", price: 1.0, quantity: 1, publisher_id: ${idpub}){
+                    isbn
+                    title
+                    price
+                    quantity
+                    publisher {
+                        id
+                        name
+                        year_publication
+                    }
+                }
+            }
+        `
+        const result = await mutate({
+            mutation: testMutation,
+        })
+
+        const expected = {
+            isbn: result.data.createBook.isbn,
+            title: 'Book Test',
+            price: 1.0,
+            quantity: 1,
+            publisher: {
+                id: idpub,
+                name: 'Publisher Test',
+                year_publication: 2020
+            }
+        }
+        expect(result.data.createBook).toEqual(expected)
+
+        await prisma.books.delete({
+            where: {
+                isbn: result.data.createBook.isbn
+            }
+        })
+    })
+
+    it('Gets a book by Id', async () => {
+
+    })
+
+    it('Updates a book by Id', async () => {
+
+    })
+
+    it('Deletes a book by Id', async () => {
+
+    })
 })
 
