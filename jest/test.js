@@ -32,7 +32,7 @@ const server = new ApolloServer({
         };
     },
 })
-const { query } = createTestClient(server)
+const { query, mutate } = createTestClient(server)
 
 beforeAll( async () => {
     // const connectionString = process.env.DATABASE_URL
@@ -65,31 +65,58 @@ beforeAll( async () => {
     // } catch(error){
     //     console.log(error)
     // }
-    
+})
 
-    
+afterAll(async () => {
+    await prisma.$disconnect()
 })
 
 describe('Publishers', () => {
+    var id
     it('Creates a publisher', async () => {
         
-        const testQuery = gql`
+        const testMutation = gql`
             mutation {
-                createPublisher(name: "Publisher Test", year_publication: 2021){
+                createPublisher(name: "Publisher Test", year_publication: 2020){
+                    id
                     name
                     year_publication
                 }
             }
         `
+        const result = await mutate({
+            mutation: testMutation,
+        })
+
         const expected = {
+            id: result.data.createPublisher.id,
             name: 'Publisher Test',
             year_publication: 2020
         }
-        const res = await query({
+        id = result.data.createPublisher.id
+        expect(result.data.createPublisher).toEqual(expected)
+    })
+
+    it('Gets a publisher by Id', async () => {
+        const testQuery = gql`
+            query{
+                findPublisherById(id: ${id}){
+                    id
+                    name
+                    year_publication
+                }
+            }
+        `
+        const result = await query({
             query: testQuery,
+            variables: { id: 1}
         })
-        console.log(res.data.createPublisher)
-        expect(res.data.createPublisher).toEqual(expected)
+        const expected = {
+            id: id,
+            name: 'Publisher Test',
+            year_publication: 2020
+        }
+        expect(result.data.findPublisherById).toEqual(expected)
     })
 })
 
