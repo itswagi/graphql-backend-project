@@ -88,7 +88,6 @@ describe('Publishers', () => {
             name: 'Publisher Test',
             year_publication: 2020
         }
-        //id = result.data.createPublisher.id
         expect(result.data.createPublisher).toEqual(expected)
 
         await prisma.publishers.delete({
@@ -120,7 +119,7 @@ describe('Publishers', () => {
         expect(result.data.findPublisherById).toEqual(expected)
     })
 
-    it('Updates publisher', async () => {
+    it('Updates publisher by Id', async () => {
         const testMutation = gql`
             mutation{
                 updatePublisher(id: ${id}, name: "Publisher Updated"){
@@ -142,8 +141,37 @@ describe('Publishers', () => {
 
         expect(result.data.updatePublisher).toEqual(expected)
     })
+    
+    it('Deletes publisher by Id', async () => {
 
+        const testRow = await prisma.publishers.create({
+            data: {
+                name: 'Publisher Test',
+                year_publication: 2020
+            }
+        })
 
+        const testMutation = gql`
+            mutation{
+                deletePublisher(id: ${testRow.id}){
+                    id
+                    name
+                    year_publication
+                }
+            }
+        `
+        const result = await mutate({
+            mutation: testMutation
+        })
+
+        const expected = {
+            id: testRow.id,
+            name: 'Publisher Test',
+            year_publication: 2020 
+        }
+
+        expect(result.data.deletePublisher).toEqual(expected)
+    })
 
 })
 
