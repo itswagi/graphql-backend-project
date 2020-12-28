@@ -97,6 +97,7 @@ beforeAll( async () => {
     }
 })
 afterAll( async () => {
+    try{
         await prisma.checkedOut.delete({
             where: { id: idchecked }
         })
@@ -110,7 +111,9 @@ afterAll( async () => {
             where: { id: idpub }
         })
         await prisma.$disconnect()
-        
+    } catch(err){
+        console.log(err)
+    }
 })
 
 
@@ -502,9 +505,88 @@ describe('CheckedOut', () => {
         expect(result.data.findCheckedOutById).toEqual(expected)
     })
     it('Updates a CheckedOut by Id', async () => {
+        const testMutation = gql`
+            mutation{
+                updateCheckedOut(id: ${idchecked}, returned: true, returned_date: "today"){
+                    id
+                    book {
+                        isbn
+                        title
+                        price
+                        publisher {
+                            id
+                            name
+                            year_publication
+                        }
+                    }
+                    reader {
+                        id
+                        name
+                        email
+                    }
+                    checkout_date
+                    returned_date
+                    returned
+                    duration
+                }
+            }
+        `
+        const result = await mutate({mutation: testMutation})
 
+        const expected = {
+            id: idchecked,
+            book: {
+                isbn: idbook,
+                title: "Book Test",
+                price: 1.0,
+                publisher: {
+                    id: idpub,
+                    name: "Publisher Test",
+                    year_publication: 2020
+                }
+            },
+            reader: {
+                id: idreader,
+                name: "Test Reader",
+                email: ""
+            },
+            checkout_date: "",
+            returned_date: "today",
+            returned: true,
+            duration: 1
+        }
+        expect(result.data.updateCheckedOut).toEqual(expected)
     })
     it('Deletes a CheckedOut by Id', async () => {
-
+        const test = await prisma.checkedOut.create({
+            data: {
+                book: {
+                    connect: {
+                        isbn: idbook
+                    }
+                },
+                reader: {
+                    connect: {
+                        id: idreader
+                    }
+                },
+                checkout_date: null,
+                returned: false,
+                returned_date: null,
+                duration: 1
+            }
+        })
+        const testMutation = gql`
+            mutation{
+                deleteCheckedOut(id: ${test.id}){
+                    id
+                }
+            } 
+        `
+        const result = await mutate({mutation: testMutation})
+        const expected = {
+            id: test.id
+        }
+        expect(result.data.deleteCheckedOut).toEqual(expected)
     })
 })
