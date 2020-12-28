@@ -58,7 +58,11 @@ const allCheckedOut = async (parent, args, context) => {
     try{
         return await context.prisma.checkedOut.findMany({
             include: {
-                book: true,
+                book: {
+                    include: {
+                        publisher: true
+                    }
+                },
                 reader: true
             }
         })
@@ -74,7 +78,11 @@ const findCheckedOutById = async (parent, args, context) => {
                 id: args.id
             },
             include: {
-                book: true,
+                book: {
+                    include: {
+                        publisher: true
+                    }
+                },
                 reader: true
             }
         })

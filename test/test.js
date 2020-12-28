@@ -449,7 +449,57 @@ describe('CheckedOut', () => {
         })
     })
     it('Gets a CheckedOut by Id', async () => {
+        const testQuery = gql`
+            query{
+                findCheckedOutById(id: ${idchecked}){
+                    id
+                    book {
+                        isbn
+                        title
+                        price
+                        publisher {
+                            id
+                            name
+                            year_publication
+                        }
+                    }
+                    reader {
+                        id
+                        name
+                        email
+                    }
+                    checkout_date
+                    returned_date
+                    returned
+                    duration
+                }
+            }
+        `
+        const result = await query({query: testQuery})
 
+        const expected = {
+            id: idchecked,
+            book: {
+                isbn: idbook,
+                title: "Book Test",
+                price: 1.0,
+                publisher: {
+                    id: idpub,
+                    name: "Publisher Test",
+                    year_publication: 2020
+                }
+            },
+            reader: {
+                id: idreader,
+                name: "Test Reader",
+                email: ""
+            },
+            checkout_date: "",
+            returned_date: "",
+            returned: false,
+            duration: 1
+        }
+        expect(result.data.findCheckedOutById).toEqual(expected)
     })
     it('Updates a CheckedOut by Id', async () => {
 
