@@ -1,27 +1,36 @@
+const { ApolloError, AuthenticationError } = require('apollo-server');
 const jwt = require('jsonwebtoken');
 const APP_SECRET = 'GraphQL-is-aw3some';
 
 function getTokenPayload(token) {
-  return jwt.verify(token, APP_SECRET);
+  try{
+    return jwt.verify(token, APP_SECRET);
+  } catch(err){
+    throw new ApolloError('Invalid Token')
+  }
 }
 
 function getUserId(req, authToken) {
-  if (req) {
-    const authHeader = req.headers.authorization;
-    if (authHeader) {
-      const token = authHeader.replace('Bearer ', '');
-      if (!token) {
-        throw new Error('No token found');
+  try{
+    if (req) {
+      const authHeader = req.headers.authorization;
+      if (authHeader) {
+        const token = authHeader.replace('Bearer ', '');
+        if (!token) {
+          throw new ApolloError('No token found');
+        }
+        const { userId } = getTokenPayload(token);
+        return userId;
       }
-      const { userId } = getTokenPayload(token);
+    } else if (authToken) {
+      const { userId } = getTokenPayload(authToken);
       return userId;
     }
-  } else if (authToken) {
-    const { userId } = getTokenPayload(authToken);
-    return userId;
+    throw new AuthenticationError('Not authenticated');
+  } catch(err){
+    throw err
   }
-
-  throw new Error('Not authenticated');
+  
 }
 
 module.exports = {

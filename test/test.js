@@ -1,4 +1,4 @@
-import { gql } from 'apollo-server-express'
+import { AuthenticationError, gql } from 'apollo-server-express'
 import { createTestClient } from 'apollo-server-testing'
 import dotenv from 'dotenv'
 dotenv.config()
@@ -25,7 +25,7 @@ const server = new ApolloServer({
         return {
           ...req,
           prisma,
-          userId:
+          userId: 
             req && req.headers.authorization
               ? getUserId(req)
               : null

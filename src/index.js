@@ -1,7 +1,8 @@
 import dotenv from 'dotenv'
 dotenv.config()
 import { PrismaClient } from '@prisma/client'
-import { ApolloServer } from 'apollo-server-express'
+import { ApolloError, ApolloServer } from 'apollo-server-express'
+import { ApolloServerPluginInlineTrace, AuthenticationError } from "apollo-server-core";
 import express from 'express'
 import fs from 'fs'
 import path from 'path'
@@ -38,8 +39,13 @@ const server = new ApolloServer({
               : null
         };
     },
+    formatError: (err) => {
+        return err
+    },
     introspection: true,
     playground: true,
+    // debug: false
+    plugins: [ApolloServerPluginInlineTrace()]
 })
 
 server.applyMiddleware({app})

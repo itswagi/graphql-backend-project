@@ -5,7 +5,7 @@ const allBooks = async (parent, args, context) => {
     try{
         return await context.prisma.books.findMany({
             include: {
-                publisher: true
+                publisher: true,
             }
         })
     }catch(err){
@@ -20,7 +20,7 @@ const findBookById = async (parent, args, context) => {
                 isbn: args.isbn
             },
             include: {
-                publisher: true
+                publisher: true,
             }
         })
         if(!book){
@@ -36,7 +36,11 @@ const findBookById = async (parent, args, context) => {
 
 const allPublishers = async (parent, args, context) => {
     try{
-        return await context.prisma.publishers.findMany()
+        return await context.prisma.publishers.findMany({
+            include: {
+                books: true
+            }
+        })
     } catch(err){
         return err
     }
@@ -47,6 +51,9 @@ const findPublisherById = async (parent, args, context) => {
         return await context.prisma.publishers.findUnique({
             where: {
                 id: args.id
+            },
+            include: {
+                books: true
             }
         })
     }catch(err){

@@ -1,19 +1,25 @@
 import { ApolloError } from 'apollo-server-express'
+import { AuthenticationError } from 'apollo-server'
 import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken'
 const { APP_SECRET, getUserId } = require('../utils')
 
 async function signup(parent, args, context, info) {
-    const password = await bcrypt.hash(args.password, 10)
+    try{
+        const password = await bcrypt.hash(args.password, 10)
   
-    const user = await context.prisma.readers.create({ data: { ...args, password } })
-  
-    const token = jwt.sign({ userId: user.id }, APP_SECRET)
-  
-    return {
-      token,
-      user,
+        const user = await context.prisma.readers.create({ data: { ...args, password } })
+    
+        const token = jwt.sign({ userId: user.id }, APP_SECRET)
+    
+        return {
+        token,
+        user,
+        }
+    } catch(err){
+        return err
     }
+    
   }
   
   async function login(parent, args, context, info) {
@@ -38,6 +44,9 @@ async function signup(parent, args, context, info) {
 
 const createBook = async (parent, args, context, info) => {
     const { userId } = context
+    console.log(userId)
+    // if(!userId)
+    //     return new AuthenticationError('Please login')
 
     return await context.prisma.books.create({
         data: {
