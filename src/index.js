@@ -10,7 +10,7 @@ import Query from './resolvers/Query'
 import Books from './resolvers/Books'
 import Mutation from './resolvers/Mutation'
 import CheckedOut from './resolvers/CheckedOut'
-import { getUserId  } from './utils'
+import { getUserId, getNoUser  } from './utils'
 
 const app = express()
 
@@ -36,7 +36,7 @@ const server = new ApolloServer({
           userId:
             req && req.headers.authorization
               ? getUserId(req)
-              : null
+              : getNoUser()
         };
     },
     formatError: (err) => {

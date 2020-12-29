@@ -33,7 +33,12 @@ function getUserId(req, authToken) {
   
 }
 
+const getNoUser = () => {
+  throw new AuthenticationError('Provide Token')
+}
+
 module.exports = {
   APP_SECRET,
-  getUserId
+  getUserId,
+  getNoUser
 };
