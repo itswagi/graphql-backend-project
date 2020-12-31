@@ -6,15 +6,15 @@ export const PublishersList = () => {
     const publishers = useSelector( state => state.publishers)
 
     const renderedPublishers = publishers.map( publisher => (
-        <div className="" key={publisher.id}>
-            {publisher.id}
-            {publisher.name}
-            {publisher.year_publication}
+        <div className="item-excerpt" key={publisher.id}>
+            <span>{publisher.id}</span>
+            <span>{publisher.name}</span>
+            <span>{publisher.year_publication}</span>
         </div>
     ))
 
     return (
-        <div className="">
+        <div className="item-list">
             {renderedPublishers}
         </div>
     )

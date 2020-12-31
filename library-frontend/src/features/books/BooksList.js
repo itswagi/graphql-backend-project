@@ -5,17 +5,17 @@ export const BooksList = () => {
     const books = useSelector(state => state.books)
 
     const renderedBooks = books.map( book => (
-        <div className="books-excerpt" key={book.isbn}>
-            {book.isbn}
-            {book.title}
-            {book.price}
-            {book.quantity}
-            {book.publisher_id}
+        <div className="item-excerpt" key={book.isbn}>
+            <span>{book.isbn}</span>
+            <span>{book.title}</span>
+            <span>{book.price}</span>
+            <span>{book.quantity}</span>
+            <span>{book.publisher_id}</span>
         </div>
     ))
 
     return (
-        <div className="books-list">
+        <div className="item-list">
             {renderedBooks}
         </div>
     )

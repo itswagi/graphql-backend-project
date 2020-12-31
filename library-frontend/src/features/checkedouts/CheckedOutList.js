@@ -5,19 +5,19 @@ export const CheckedOutList = () => {
     const checkedouts = useSelector( state => state.checkedouts)
 
     const renderedCheckedOuts = checkedouts.map( checkedout => (
-        <div key={checkedout.id}>
-            {checkedout.id}
-            {checkedout.book_isbn}
-            {checkedout.reader_id}
-            {checkedout.checkedout_date}
-            {checkedout.returned}
-            {checkedout.returned_date}
-            {checkedout.duration}
+        <div className="item-excerpt" key={checkedout.id}>
+            <span>{checkedout.id}</span>
+            <span>{checkedout.book_isbn}</span>
+            <span>{checkedout.reader_id}</span>
+            <span>{checkedout.checkedout_date}</span>
+            <span>{checkedout.returned}</span>
+            <span>{checkedout.returned_date}</span>
+            <span>{checkedout.duration}</span>
         </div>
     ))
 
     return (
-        <div className="">
+        <div className="item-list">
             {renderedCheckedOuts}
         </div>
     )
