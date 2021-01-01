@@ -10,10 +10,13 @@ import { NavBar } from './features/NavBar/NavBar'
 function App() {
   return (
     <div className="App">
-      <NavBar />
-        <BooksList />
-        <PublishersList />
-        <CheckedOutList />
+        <NavBar />
+        <div className="content">
+          <BooksList />
+          <PublishersList />
+          <CheckedOutList />
+        </div>
+        
     </div>
   );
 }
