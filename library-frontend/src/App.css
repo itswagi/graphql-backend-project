@@ -16,6 +16,10 @@ nav div {
   margin: 0.5rem auto;
 }
 
+.navlink-selected {
+  background-color: #644343;
+}
+
 .content{
   width: 100%;
   display: flex;

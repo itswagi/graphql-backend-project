@@ -11,13 +11,18 @@ export const NavBar = () => {
         if( !userStatus ){
             return (
                 <div title="Login">
-                    <AiOutlineLogin size="1.5rem" color="white" stroke-width="1" />
+                    <NavLink exact to="Login">
+                        <AiOutlineLogin size="1.5rem" color="white" stroke-width="1" />
+                    </NavLink>
                 </div>
                 )
         } else {
             return (
                 <div title="Logout">
-                    <AiOutlineLogout size="1.5rem" color="white" stroke-width="1" />
+                    <NavLink exact to="/">
+                        <AiOutlineLogout size="1.5rem" color="white" stroke-width="1" />
+                    </NavLink>
+                    
                 </div>
                 )  
         } 
@@ -25,12 +30,12 @@ export const NavBar = () => {
     return(
         <nav>
             <div title="Home">
-                <NavLink to="/">
+                <NavLink exact to="/">
                     <FaHome size="1.5rem" color="white" stroke-width="3" />
                 </NavLink>
             </div>
             <div title="Search">
-                <NavLink to="/search">
+                <NavLink exact to="/search">
                     <FiSearch size="1.5rem" color="white" stroke-width="3" />
                 </NavLink>
                 
