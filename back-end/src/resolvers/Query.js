@@ -1,4 +1,4 @@
-import { ApolloError } from 'apollo-server'
+import { ApolloError, AuthenticationError } from 'apollo-server'
 import { APP_SECRET, getReaderId } from '../utils'
 
 const allBooks = async (parent, args, context) => {
@@ -63,6 +63,10 @@ const findPublisherById = async (parent, args, context) => {
 
 const allCheckedOut = async (parent, args, context) => {
     try{
+        const { userId } = context
+        if (!userId){
+            throw new AuthenticationError('Please Login')
+        }
         return await context.prisma.checkedOut.findMany({
             include: {
                 book: {
@@ -80,6 +84,10 @@ const allCheckedOut = async (parent, args, context) => {
 
 const findCheckedOutById = async (parent, args, context) => {
     try{
+        const { userId } = context
+        if (!userId){
+            throw new AuthenticationError('Please Login')
+        }
         return await context.prisma.checkedOut.findUnique({
             where: {
                 id: args.id

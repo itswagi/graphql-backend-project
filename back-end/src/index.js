@@ -10,8 +10,8 @@ import Query from './resolvers/Query'
 import Books from './resolvers/Books'
 import Mutation from './resolvers/Mutation'
 import CheckedOut from './resolvers/CheckedOut'
-import { getUserId, getNoUser  } from './utils'
-
+import { getUserId } from './utils'
+import cors from 'cors'
 const app = express()
 
 const resolvers = {
@@ -36,7 +36,7 @@ const server = new ApolloServer({
           userId:
             req && req.headers.authorization
               ? getUserId(req)
-              : getNoUser()
+              : null
         };
     },
     formatError: (err) => {
@@ -48,6 +48,12 @@ const server = new ApolloServer({
     plugins: [ApolloServerPluginInlineTrace()]
 })
 
+const corsOptions = {
+    origin: 'http://localhost:4000/',
+    credentials: true
+}
+
+app.use(cors(corsOptions))
 server.applyMiddleware({app})
 
 app.listen(process.env.PORT || 4000, () => {

@@ -23,50 +23,57 @@ async function signup(parent, args, context, info) {
   }
   
   async function login(parent, args, context, info) {
-    const user = await context.prisma.readers.findUnique({ where: { email: args.email } })
-    if (!user) {
-      throw new Error('No such user found')
-    }
-  
-    const valid = await bcrypt.compare(args.password, user.password)
-    if (!valid) {
-      throw new Error('Invalid password')
-    }
-  
-    const token = jwt.sign({ userId: user.id }, APP_SECRET)
+        const user = await context.prisma.readers.findUnique({ where: { email: args.email } })
+        if (!user) {
+        throw new Error('No such user found')
+        }
+    
+        const valid = await bcrypt.compare(args.password, user.password)
+        if (!valid) {
+        throw new Error('Invalid password')
+        }
+    
+        const token = jwt.sign({ userId: user.id }, APP_SECRET)
 
-    return {
-      token,
-      user,
-    }
+        return {
+        token,
+        user,
+        }
 }
   
 
 const createBook = async (parent, args, context, info) => {
-    const { userId } = context
-    console.log(userId)
-    // if(!userId)
-    //     return new AuthenticationError('Please login')
-
-    return await context.prisma.books.create({
-        data: {
-            title: args.title,
-            price: args.price,
-            quantity: args.quantity,
-            publisher: {
-                connect: {
-                    id: args.publisher_id
-                }
-            }
-        },
-        include: {
-            publisher: true
+    try{
+        const { userId } = context
+        if (!userId){
+            throw new AuthenticationError('Please Login')
         }
-    })
+        return await context.prisma.books.create({
+            data: {
+                title: args.title,
+                price: args.price,
+                quantity: args.quantity,
+                publisher: {
+                    connect: {
+                        id: args.publisher_id
+                    }
+                }
+            },
+            include: {
+                publisher: true
+            }
+        })
+    } catch(err){
+        return err
+    }
 }
 
 const updateBook = async (parent, args, context, info) => {
     try{
+        const { userId } = context
+        if (!userId){
+            throw new AuthenticationError('Please Login')
+        }
         const {isbn, publisher_id, ...values} = args
 
         if(publisher_id)
@@ -92,6 +99,10 @@ const updateBook = async (parent, args, context, info) => {
 
 const deleteBook = async (parent, args, context, info) => {
     try{
+        const { userId } = context
+        if (!userId){
+            throw new AuthenticationError('Please Login')
+        }
         if(!args.isbn)
             throw new ApolloError('Missing ISBN value')
         return await context.prisma.books.delete({
@@ -109,6 +120,10 @@ const deleteBook = async (parent, args, context, info) => {
 
 const createPublisher = async (parent, args, context) => {
     try{
+        const { userId } = context
+        if (!userId){
+            throw new AuthenticationError('Please Login')
+        }
         return await context.prisma.publishers.create({
             data: {
                 ...args
@@ -121,6 +136,10 @@ const createPublisher = async (parent, args, context) => {
 
 const updatePublisher = async (parent, args, context) => {
     try{
+        const { userId } = context
+        if (!userId){
+            throw new AuthenticationError('Please Login')
+        }
         const {id, ...values} = args
 
         if(Object.keys(values).length === 0)
@@ -141,6 +160,10 @@ const updatePublisher = async (parent, args, context) => {
 
 const deletePublisher = async (parent, args, context) => {
     try{
+        const { userId } = context
+        if (!userId){
+            throw new AuthenticationError('Please Login')
+        }
         return await context.prisma.publishers.delete({
             where: {
                 id: args.id
@@ -153,6 +176,10 @@ const deletePublisher = async (parent, args, context) => {
 
 const createCheckedOut = async (parent, args, context) => {
     try{
+        const { userId } = context
+        if (!userId){
+            throw new AuthenticationError('Please Login')
+        }
         const {book_isbn, reader_id, ...values} = args
         return await context.prisma.checkedOut.create({
             data: {
@@ -184,6 +211,10 @@ const createCheckedOut = async (parent, args, context) => {
 
 const updateCheckedOut = async (parent, args, context) => {
     try{
+        const { userId } = context
+        if (!userId){
+            throw new AuthenticationError('Please Login')
+        }
         const {id, ...values} = args
         if(Object.keys(values).length === 0)
             throw new ApolloError("Missing attributes")
@@ -210,6 +241,10 @@ const updateCheckedOut = async (parent, args, context) => {
 
 const deleteCheckedOut = async (parent, args, context) => {
     try{
+        const { userId } = context
+        if (!userId){
+            throw new AuthenticationError('Please Login')
+        }
         return await context.prisma.checkedOut.delete({
             where: {
                 id: args.id

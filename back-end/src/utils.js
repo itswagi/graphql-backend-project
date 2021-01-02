@@ -3,11 +3,7 @@ const jwt = require('jsonwebtoken');
 const APP_SECRET = 'GraphQL-is-aw3some';
 
 function getTokenPayload(token) {
-  try{
     return jwt.verify(token, APP_SECRET);
-  } catch(err){
-    throw new ApolloError('Invalid Token')
-  }
 }
 
 function getUserId(req, authToken) {
@@ -16,6 +12,8 @@ function getUserId(req, authToken) {
       const authHeader = req.headers.authorization;
       if (authHeader) {
         const token = authHeader.replace('Bearer ', '');
+        if(token === 'Bearer')
+          return null
         if (!token) {
           throw new ApolloError('No token found');
         }
@@ -33,12 +31,8 @@ function getUserId(req, authToken) {
   
 }
 
-const getNoUser = () => {
-  throw new AuthenticationError('Provide Token')
-}
 
 module.exports = {
   APP_SECRET,
   getUserId,
-  getNoUser
 };
