@@ -39,9 +39,6 @@ const server = new ApolloServer({
               : null
         };
     },
-    formatError: (err) => {
-        return err
-    },
     introspection: true,
     playground: true,
     // debug: false
@@ -49,7 +46,8 @@ const server = new ApolloServer({
 })
 
 const corsOptions = {
-    origin: 'http://localhost:4000/',
+    //origin: 'http://localhost:3000',
+    origin: ['http://localhost:3000', 'https://studio.apollographql.com'],
     credentials: true
 }
 

@@ -2,6 +2,7 @@ const { ApolloError, AuthenticationError } = require('apollo-server');
 const jwt = require('jsonwebtoken');
 const APP_SECRET = 'GraphQL-is-aw3some';
 
+
 function getTokenPayload(token) {
     return jwt.verify(token, APP_SECRET);
 }
@@ -28,7 +29,6 @@ function getUserId(req, authToken) {
   } catch(err){
     throw err
   }
-  
 }
 
 
