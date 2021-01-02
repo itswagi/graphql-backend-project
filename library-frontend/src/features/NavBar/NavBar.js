@@ -12,7 +12,7 @@ export const NavBar = () => {
             return (
                 <div title="Login">
                     <NavLink exact to="Login">
-                        <AiOutlineLogin size="1.5rem" color="white" stroke-width="1" />
+                        <AiOutlineLogin size="1.5rem" color="white" strokeWidth="1" />
                     </NavLink>
                 </div>
                 )
@@ -20,7 +20,7 @@ export const NavBar = () => {
             return (
                 <div title="Logout">
                     <NavLink exact to="/">
-                        <AiOutlineLogout size="1.5rem" color="white" stroke-width="1" />
+                        <AiOutlineLogout size="1.5rem" color="white" strokeWidth="1" />
                     </NavLink>
                     
                 </div>
@@ -31,12 +31,12 @@ export const NavBar = () => {
         <nav>
             <div title="Home">
                 <NavLink exact to="/">
-                    <FaHome size="1.5rem" color="white" stroke-width="3" />
+                    <FaHome size="1.5rem" color="white" strokeWidth="3" />
                 </NavLink>
             </div>
             <div title="Search">
                 <NavLink exact to="/search">
-                    <FiSearch size="1.5rem" color="white" stroke-width="3" />
+                    <FiSearch size="1.5rem" color="white" strokeWidth="3" />
                 </NavLink>
                 
             </div>
