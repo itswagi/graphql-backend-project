@@ -1,4 +1,5 @@
 import React from 'react'
+import { useSelector } from 'react-redux'
 import { gql, useMutation }  from '@apollo/client'
 
 const login = gql`
@@ -11,23 +12,14 @@ const login = gql`
 `
 
 export const Login = () => {
+    const loggedIn = useSelector( state => state.login)
     const [addTodo] = useMutation(login)
     // onClick={ () => {
     //     //addTodo().then(result => console.log(result))
-    // }}
-    // let email
-    // let password
-    // const handleEmailChange = (event) => {
-    //     email = event.target.value
-    // }
-    // const handlePasswordChange = (event) => {
-    //     password = event.target.value
-    //     console.log(password)
-    // }
+
     const handleLogin = () => {
         const email = document.getElementById('email').value
         const password = document.getElementById('password').value
-
     }
     return (
         <div className="login">

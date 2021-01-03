@@ -35,6 +35,7 @@ nav div {
   justify-content: center;
   align-items: center;
 }
+
 .upper {
   height: 40%;
 }
@@ -47,7 +48,7 @@ nav div {
   height: 2.5rem;
   background-color: #F0F0F0;
   border: none;
-  border-radius: 20px;
+  border-radius: 5px;
   padding: 0 1.125rem;
   margin: 0.25rem 0;
 }
