@@ -21,6 +21,7 @@ async function signup(parent, args, context, info) {
   
   async function login(parent, args, context) {
       try{
+        console.log(args)
         const user = await context.prisma.readers.findUnique({ where: { email: args.email } })
         if (!user) {
             throw new Error('No such user found')
