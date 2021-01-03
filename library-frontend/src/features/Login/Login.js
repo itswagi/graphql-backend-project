@@ -1,25 +1,18 @@
 import React from 'react'
-import { useSelector } from 'react-redux'
-import { gql, useMutation }  from '@apollo/client'
+import { useDispatch } from 'react-redux'
+import {  authLogin } from './loginSlice'
 
-const login = gql`
-    mutation{
-        signup(email: "abcd", password: "12345", name: "test", address: "home", phone: "0900"){
-            token
 
-        }
-    }
-`
 
 export const Login = () => {
-    const loggedIn = useSelector( state => state.login)
-    const [addTodo] = useMutation(login)
-    // onClick={ () => {
-    //     //addTodo().then(result => console.log(result))
+    //const loggedIn = useSelector( state => state.login )
+    const dispatch = useDispatch()
 
     const handleLogin = () => {
-        const email = document.getElementById('email').value
-        const password = document.getElementById('password').value
+        const email = String(document.getElementById('email').value)
+        const password = String(document.getElementById('password').value)
+        
+        dispatch(authLogin([email, password]))
     }
     return (
         <div className="login">

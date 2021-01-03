@@ -23,14 +23,7 @@ const client = new ApolloClient({
     authorization: token ? `Bearer ${token}` : "",
   }
 })
-// const login = gql`
-//   mutation{
-//       login(email: "abc", password: "12345"){
-//           token
-//       }
-// }
-// `
-// client.mutate({ mutation: login}).then( result => console.log(result)).catch(err => console.log(err))
+
 function App() {
   return (
     <ApolloProvider client={client}>
@@ -58,4 +51,6 @@ function App() {
   );
 }
 
+
+export { client }
 export default App;
