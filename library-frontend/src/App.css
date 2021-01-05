@@ -20,10 +20,30 @@ nav div {
   background-color: #644343;
 }
 
+.mainLogin{
+  display: flex;
+}
+.signup{
+  width: 30rem;
+  height: 30rem;
+  background:#633333;
+}
 .login {
   width: 30rem;
   height: 30rem;
   background: white;
+}
+
+.signup div{
+  width: 100%;
+  height: 100%;
+  font-size: 3rem;
+  font-weight: bold;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: white;
 }
 
 .login div{
@@ -35,13 +55,45 @@ nav div {
   justify-content: center;
   align-items: center;
 }
+.signup button{
+  width: 25%;
+  height: 2.5rem;
+  margin-top: 1rem;
+  background-color: #c25353;
+  border: none;
+  border-radius: 20px;
+  color: white;
+  font-size: 1.125rem;
+}
+
+.signup button:focus {
+  outline: none;
+}
+
+.signup button:active {
+  transform: scale(0.95);
+}
 
 .upper {
   height: 40%;
 }
-
 .lower {
   height: 50%;
+}
+.hidden {
+  visibility: hidden;
+}
+.visible{
+  visibility: visible;
+}
+
+.login span {
+  font-size: 1rem;
+  font-weight: 400;
+  color: red;
+  position: relative;
+  z-index: 1;
+
 }
 .login input {
   width: 50%;

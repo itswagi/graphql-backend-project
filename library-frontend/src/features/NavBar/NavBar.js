@@ -25,7 +25,7 @@ export const NavBar = () => {
         } else {
             return (
                 <div title="Logout" onClick={ handleLogout }>
-                    <NavLink to="Login">
+                    <NavLink exact to="Login">
                         <AiOutlineLogout size="1.5rem" color="white" strokeWidth="1" />
                     </NavLink>
                     
