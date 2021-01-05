@@ -46,6 +46,18 @@ nav div {
   color: white;
 }
 
+form{
+  width: 100%;
+  height: 100%;
+  font-size: 3rem;
+  font-weight: bold;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: white;
+}
+
 .login div{
   width: 100%;
   font-size: 3rem;
@@ -105,8 +117,29 @@ nav div {
   margin: 0.25rem 0;
 }
 
+
 .login input:focus {
   outline: none;
+}
+
+.signup input {
+  width: 50%;
+  height: 2.5rem;
+  background-color:#633333;
+  color: white;
+  border: none;
+  border-bottom: 1px solid white;
+  padding: 0 1.125rem;
+  margin: 0.25rem 0;
+}
+
+.signup input:focus {
+  outline: none;
+}
+
+.signup input::placeholder {
+  color: white;
+  opacity: 1;
 }
 
 .login button {

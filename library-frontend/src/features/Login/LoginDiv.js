@@ -29,10 +29,12 @@ export const LoginDiv = () => {
                 <h1>Login</h1>
             </div>
             <div className="lower">
-                <span className={ errStyle }>Incorrect email or password</span>
-                <input ref={email} type="email" id="email" placeholder="Email" />
-                <input ref={password} type="password" id="password" placeholder="Password"/>
-                <button onClick={handleLogin}>Login</button>
+                <form>
+                    <span className={ errStyle }>Incorrect email or password</span>
+                    <input ref={email} type="email" id="email" placeholder="Email" required/>
+                    <input ref={password} type="password" id="password" placeholder="Password" required/>
+                    <button onClick={handleLogin}>Login</button>
+                </form>
             </div>
         </div>
     )
