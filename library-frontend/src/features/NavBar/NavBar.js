@@ -1,4 +1,5 @@
 import React from 'react'
+import { useSelector } from 'react-redux'
 import { NavLink } from 'react-router-dom'
 import { FiSearch } from 'react-icons/fi'
 import { FaHome } from 'react-icons/fa'
@@ -6,9 +7,9 @@ import { AiOutlineLogin, AiOutlineLogout} from 'react-icons/ai'
 
 export const NavBar = () => {
 
-    const userStatus = false
+    const loggedIn = useSelector(state => state.loggedIn)
     const renderLoginLogout = () => {
-        if( !userStatus ){
+        if( !loggedIn ){
             return (
                 <div title="Login">
                     <NavLink exact to="Login">

@@ -3,7 +3,8 @@ import { gql } from '@apollo/client'
 import { client } from '../../App'
 
 const initialState = {
-    log: {loggedIn: false, token: null},
+    loggedIn: false, 
+    token: null,
     status: 'idle',
     error: null,
 }
@@ -25,7 +26,12 @@ export const authLogin = createAsyncThunk('Auth/login', async (values) => {
 const loginSlice = createSlice({
     name: 'loggedIn',
     initialState,
-    reducers: {},
+    reducers: {
+        logout (state, action) {
+            state.loggedIn = false
+            state.token = null
+        }
+    },
     extraReducers: {
         [authLogin.pending]: (state, action) => {
             state.status = 'loading'
@@ -34,8 +40,10 @@ const loginSlice = createSlice({
             state.status = 'succeeded'
             console.log(action.payload)
             const { token } = action.payload
-            state.log.loggedIn = true
-            state.log.token = token
+            state.loggedIn = true
+            state.token = token
+            state.error = null
+            localStorage.setItem('token', token);
         },
         [authLogin.rejected]: (state, action) => {
             state.status = 'failed'

@@ -18,7 +18,6 @@ const link = createHttpLink({
 const client = new ApolloClient({
   cache: new InMemoryCache(),
   link,
-  credentials: 'include',
   headers: {
     authorization: token ? `Bearer ${token}` : "",
   }
