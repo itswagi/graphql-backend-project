@@ -1,13 +1,18 @@
 import React from 'react'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import { NavLink } from 'react-router-dom'
 import { FiSearch } from 'react-icons/fi'
 import { FaHome } from 'react-icons/fa'
 import { AiOutlineLogin, AiOutlineLogout} from 'react-icons/ai'
+import { logout } from '../Login/loginSlice'
 
 export const NavBar = () => {
 
-    const loggedIn = useSelector(state => state.loggedIn)
+    const loggedIn = useSelector(state => state.login.loggedIn)
+    const dispatch = useDispatch()
+    const handleLogout = () => {
+        dispatch(logout())
+    }
     const renderLoginLogout = () => {
         if( !loggedIn ){
             return (
@@ -19,8 +24,8 @@ export const NavBar = () => {
                 )
         } else {
             return (
-                <div title="Logout">
-                    <NavLink exact to="/">
+                <div title="Logout" onClick={ handleLogout }>
+                    <NavLink to="Login">
                         <AiOutlineLogout size="1.5rem" color="white" strokeWidth="1" />
                     </NavLink>
                     

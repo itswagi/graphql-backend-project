@@ -4,7 +4,6 @@ import { client } from '../../App'
 
 const initialState = {
     loggedIn: false, 
-    token: null,
     status: 'idle',
     error: null,
 }
@@ -27,9 +26,9 @@ const loginSlice = createSlice({
     name: 'loggedIn',
     initialState,
     reducers: {
-        logout (state, action) {
+        logout (state) {
             state.loggedIn = false
-            state.token = null
+            localStorage.removeItem('token')
         }
     },
     extraReducers: {
@@ -38,10 +37,8 @@ const loginSlice = createSlice({
         },
         [authLogin.fulfilled]: (state, action) => {
             state.status = 'succeeded'
-            console.log(action.payload)
             const { token } = action.payload
             state.loggedIn = true
-            state.token = token
             state.error = null
             localStorage.setItem('token', token);
         },
@@ -52,6 +49,6 @@ const loginSlice = createSlice({
     }
 })
 
-//export const {} = loginSlice.actions
+export const { logout } = loginSlice.actions
 
 export default loginSlice.reducer
