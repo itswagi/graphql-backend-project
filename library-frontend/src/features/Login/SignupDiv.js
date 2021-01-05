@@ -1,5 +1,6 @@
 import React, { useState, useRef } from 'react'
-import {  } from './loginSlice'
+import { authSignUp } from './loginSlice'
+
 export const SignupDiv = () => {
     const [showForm, setShowForm] = useState(false)
     const name = useRef()
@@ -20,7 +21,6 @@ export const SignupDiv = () => {
             <button onClick={ handleClick }>Click Here!</button>
         </>
     )
-    
     
     const signupForm = (
         <form>

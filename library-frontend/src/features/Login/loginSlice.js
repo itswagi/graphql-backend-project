@@ -22,6 +22,10 @@ export const authLogin = createAsyncThunk('Auth/login', async (values) => {
     return response.data.login
 })
 
+export const authSignUp = createAsyncThunk('Auth/SignUp', async () => {
+
+})
+
 const loginSlice = createSlice({
     name: 'loggedIn',
     initialState,
