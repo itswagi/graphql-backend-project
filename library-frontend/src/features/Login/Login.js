@@ -15,6 +15,7 @@ export const Login = () => {
             setErrStyle('visible')
         }
     }, [loggedInStatus, history])
+    
     return (
         <div className="mainLogin">
             <LoginDiv errStyle={errStyle}/>
