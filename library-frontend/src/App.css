@@ -20,9 +20,10 @@ nav div {
   background-color: #644343;
 }
 
-.mainLogin{
+.container{
   display: flex;
 }
+
 .signup{
   width: 30rem;
   height: 30rem;
@@ -45,6 +46,15 @@ nav div {
   align-items: center;
   color: white;
 }
+.login div{
+  width: 100%;
+  font-size: 3rem;
+  font-weight: bold;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
 
 form{
   width: 100%;
@@ -58,33 +68,7 @@ form{
   color: white;
 }
 
-.login div{
-  width: 100%;
-  font-size: 3rem;
-  font-weight: bold;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-.signup button{
-  width: 25%;
-  height: 2.5rem;
-  margin-top: 1rem;
-  background-color: #c25353;
-  border: none;
-  border-radius: 20px;
-  color: white;
-  font-size: 1.125rem;
-}
 
-.signup button:focus {
-  outline: none;
-}
-
-.signup button:active {
-  transform: scale(0.95);
-}
 
 .upper {
   height: 40%;
@@ -107,7 +91,7 @@ form{
   z-index: 1;
 
 }
-.login input {
+input {
   width: 50%;
   height: 2.5rem;
   background-color: #F0F0F0;
@@ -116,24 +100,13 @@ form{
   padding: 0 1.125rem;
   margin: 0.25rem 0;
 }
-
-
-.login input:focus {
-  outline: none;
-}
-
 .signup input {
-  width: 50%;
-  height: 2.5rem;
   background-color:#633333;
   color: white;
-  border: none;
   border-bottom: 1px solid white;
-  padding: 0 1.125rem;
-  margin: 0.25rem 0;
 }
 
-.signup input:focus {
+input:focus {
   outline: none;
 }
 
@@ -142,7 +115,7 @@ form{
   opacity: 1;
 }
 
-.login button {
+button {
   width: 25%;
   height: 2.5rem;
   margin-top: 1rem;
@@ -153,13 +126,14 @@ form{
   font-size: 1.125rem;
 }
 
-.login button:focus {
+button:focus {
   outline: none;
 }
 
-.login button:active {
+button:active {
   transform: scale(0.95);
 }
+
 
 .content{
   width: 100%;

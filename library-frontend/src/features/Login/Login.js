@@ -17,7 +17,7 @@ export const Login = () => {
     }, [loggedInStatus, history])
     
     return (
-        <div className="mainLogin">
+        <div className="container">
             <LoginDiv errStyle={errStyle}/>
             <SignupDiv />
         </div>
