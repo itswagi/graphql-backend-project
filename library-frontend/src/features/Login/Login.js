@@ -8,6 +8,7 @@ export const Login = () => {
     const history = useHistory()
     const [errStyle, setErrStyle] = useState('hidden')
     let loggedInStatus = useSelector( state => state.login.status)
+    
     useEffect(() => {
         if(loggedInStatus === 'succeeded')
             history.push('/')

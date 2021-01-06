@@ -1,14 +1,49 @@
-import { createSlice } from '@reduxjs/toolkit'
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
+import { gql } from '@apollo/client'
+import { client } from '../../App'
 
-const initialState = [
-    {id: 1, book_isbn: 1, reader_id: 1, checkedout_date: 'Today', returned: 'false', returned_date: 'Today', duration: 1},
-    {id: 2, book_isbn: 2, reader_id: 1, checkedout_date: 'Today', returned: 'false', returned_date: 'Today', duration: 1}
-]
+const initialState = {
+    books: [],
+    status: 'idle',
+    error: null
+}
+
+export const fetchCheckedOuts = createAsyncThunk('checkedout/fetchBooks', async () => {
+    const query = gql`
+        query Query {
+            allCheckedOut {
+                id
+                isbn_book
+                reader_id
+                checkout_date
+                returned
+                returned_date
+                duration
+            }
+        }
+    `
+
+    const response = await client.query({ query: query})
+    return response.data.allCheckedOut
+})
 
 const checkedoutSlice = createSlice({
     name: 'checkedout',
     initialState,
-    reducers: {}
+    reducers: {},
+    extraReducers: {
+        [fetchCheckedOuts.pending]: (state, action) => {
+            state.status = 'loading'
+        },
+        [fetchCheckedOuts.fulfilled]: (state, action) => {
+            state.status = 'succeeded'
+            state.books = action.payload
+        },
+        [fetchCheckedOuts.rejected]: (state, action) => {
+            state.status = 'failed'
+            state.error = action.error
+        }
+    }
 })
 
 export default checkedoutSlice.reducer

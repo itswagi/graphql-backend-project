@@ -14,7 +14,7 @@ export const NavBar = () => {
         dispatch(logout())
     }
     const renderLoginLogout = () => {
-        if( !loggedIn ){
+        if( !loggedIn && localStorage.getItem('token') === null){
             return (
                 <div title="Login">
                     <NavLink exact to="Login">

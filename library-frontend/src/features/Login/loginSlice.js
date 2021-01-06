@@ -3,7 +3,7 @@ import { gql } from '@apollo/client'
 import { client } from '../../App'
 
 const initialState = {
-    loggedIn: false, 
+    loggedIn: localStorage.getItem('token') !== null ? true: false, 
     status: 'idle',
     error: null,
 }
