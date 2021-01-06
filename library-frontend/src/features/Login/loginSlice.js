@@ -23,8 +23,6 @@ export const authLogin = createAsyncThunk('Auth/login', async (values) => {
 })
 
 export const authSignUp = createAsyncThunk('Auth/SignUp', async (values) => {
-    if( !values.every( value => value !== ""))
-        throw new Error('Invalid entries')
     const signup = gql`
         mutation Mutation($signupEmail: String!, $signupPassword: String!, $signupName: String!, $signupAddress: String!, $signupPhone: String!) {
             signup(email: $signupEmail, password: $signupPassword, name: $signupName, address: $signupAddress, phone: $signupPhone) {
@@ -67,6 +65,7 @@ const loginSlice = createSlice({
         },
         [authSignUp.fulfilled]: (state, action) => {
             state.status = 'succeeded'
+            console.log(action.payload)
             const { token } = action.payload
             state.loggedIn = true
             state.error = null
