@@ -1,8 +1,10 @@
 import React, { useState, useRef } from 'react'
+import { useDispatch } from 'react-redux'
 import { authSignUp } from './loginSlice'
 
 export const SignupDiv = () => {
     const [showForm, setShowForm] = useState(false)
+    const dispatch = useDispatch()
     const name = useRef()
     const email = useRef()
     const password = useRef()
@@ -10,7 +12,7 @@ export const SignupDiv = () => {
     const address = useRef()
 
     const handleSignUp = () => {
-
+        dispatch(authSignUp(name, email, password, phone, address))
     }
     const handleClick = () => {
         setShowForm(true)

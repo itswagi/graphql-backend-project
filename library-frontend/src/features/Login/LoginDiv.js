@@ -7,8 +7,7 @@ export const LoginDiv = () => {
     const dispatch = useDispatch()
     const history = useHistory()
     const [errStyle, setErrStyle] = useState('hidden')
-    let loggedIn = useSelector( state => state.login.loggedIn)
-    let err = useSelector( state => state.login.error)
+    let loggedInStatus = useSelector( state => state.login.status)
     const email = useRef()
     const password = useRef()
 
@@ -16,12 +15,12 @@ export const LoginDiv = () => {
         dispatch(authLogin([email.current.value, password.current.value]))
     }
     useEffect(() => {
-        if(loggedIn === true)
+        if(loggedInStatus === 'succeeded')
             history.push('/')
-        if(err){
+        else if(loggedInStatus === 'failed'){
             setErrStyle('visible')
         }
-    }, [loggedIn, history, err])
+    }, [loggedInStatus, history])
 
     return(
         <div className="login">

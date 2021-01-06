@@ -22,8 +22,8 @@ export const authLogin = createAsyncThunk('Auth/login', async (values) => {
     return response.data.login
 })
 
-export const authSignUp = createAsyncThunk('Auth/SignUp', async () => {
-
+export const authSignUp = createAsyncThunk('Auth/SignUp', async (name, email, password, phone, address) => {
+    console.log(name, email, password, phone, address)
 })
 
 const loginSlice = createSlice({
@@ -32,6 +32,7 @@ const loginSlice = createSlice({
     reducers: {
         logout (state) {
             state.loggedIn = false
+            state.status = 'idle'
             localStorage.removeItem('token')
         }
     },
@@ -47,6 +48,20 @@ const loginSlice = createSlice({
             localStorage.setItem('token', token);
         },
         [authLogin.rejected]: (state, action) => {
+            state.status = 'failed'
+            state.error = action.error
+        },
+        [authSignUp.pending]: (state, action) => {
+            state.status = 'loading'
+        },
+        [authSignUp.fulfilled]: (state, action) => {
+            state.status = 'succeeded'
+            const { token } = action.payload
+            state.loggedIn = true
+            state.error = null
+            localStorage.setItem('token', token)
+        },
+        [authSignUp.rejected]: (state, action) => {
             state.status = 'failed'
             state.error = action.error
         }
