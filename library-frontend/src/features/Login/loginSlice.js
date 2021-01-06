@@ -22,8 +22,17 @@ export const authLogin = createAsyncThunk('Auth/login', async (values) => {
     return response.data.login
 })
 
-export const authSignUp = createAsyncThunk('Auth/SignUp', async (name, email, password, phone, address) => {
-    console.log(name, email, password, phone, address)
+export const authSignUp = createAsyncThunk('Auth/SignUp', async (values) => {
+    const signup = gql`
+        mutation Mutation($signupEmail: String!, $signupPassword: String!, $signupName: String!, $signupAddress: String!, $signupPhone: String!) {
+            signup(email: $signupEmail, password: $signupPassword, name: $signupName, address: $signupAddress, phone: $signupPhone) {
+                token
+            }
+        }
+    `
+    const response = await client.mutate({ mutation: signup, variables: { signupName: values[0], signupEmail: values[1], signupPassword: values[2],signupPhone: values[3], signupAddress: values[4]}})
+    console.log(response)
+    return response.data.signup
 })
 
 const loginSlice = createSlice({
@@ -56,6 +65,7 @@ const loginSlice = createSlice({
         },
         [authSignUp.fulfilled]: (state, action) => {
             state.status = 'succeeded'
+            console.log(action.payload)
             const { token } = action.payload
             state.loggedIn = true
             state.error = null

@@ -12,7 +12,7 @@ export const SignupDiv = () => {
     const address = useRef()
 
     const handleSignUp = () => {
-        dispatch(authSignUp(name, email, password, phone, address))
+        dispatch(authSignUp([name.current.value, email.current.value, password.current.value, phone.current.value, address.current.value]))
     }
     const handleClick = () => {
         setShowForm(true)
