@@ -4,6 +4,7 @@ import { authSignUp } from './loginSlice'
 
 export const SignupDiv = () => {
     const [showForm, setShowForm] = useState(false)
+
     const dispatch = useDispatch()
     const name = useRef()
     const email = useRef()
