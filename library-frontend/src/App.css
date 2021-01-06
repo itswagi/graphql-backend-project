@@ -68,8 +68,6 @@ form{
   color: white;
 }
 
-
-
 .upper {
   height: 40%;
 }
@@ -133,7 +131,6 @@ button:focus {
 button:active {
   transform: scale(0.95);
 }
-
 
 .content{
   width: 100%;
