@@ -22,7 +22,7 @@ type Readers {
 }
 type CheckedOut {
     id: Int!
-    isbn_book: Int
+    book_isbn: Int
     book: Books!
     reader_id: Int
     reader: Readers!

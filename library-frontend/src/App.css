@@ -150,16 +150,36 @@ button:active {
 
 }
 .item-excerpt{
-  display: flex;
-  justify-content: flex-start;
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  justify-items: center;
+  align-items: center;
+  /* grid-template-rows: auto; */
   font-family: 'Roboto', sans-serif;
   font-size: 1.25rem;
   margin: 0.5rem;
   border-bottom: 0.1rem solid rgb(112, 109, 109);
 }
 
-.item-excerpt span {
-  width: 10rem;
+.item-excerpt:hover{
+  background-color: #d1cece
+}
+
+.item-excerpt div {
+  overflow-wrap: break-word;
+  /* width: 10rem;
   height: 1.5rem;
-  padding: 0.25rem;
+  padding: 0.25rem; */
+}
+
+.item-header{
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  justify-items: center;
+  align-items: center;
+  /* grid-template-rows: auto; */
+  font-family: 'Roboto', sans-serif;
+  font-size: 1.25rem;
+  margin: 0.5rem;
+  border-bottom: 0.1rem solid rgb(112, 109, 109);
 }

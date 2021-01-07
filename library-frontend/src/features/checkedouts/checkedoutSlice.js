@@ -13,17 +13,30 @@ export const fetchCheckedOuts = createAsyncThunk('checkedout/fetchBooks', async 
         query Query {
             allCheckedOut {
                 id
-                isbn_book
+                book_isbn
                 reader_id
                 checkout_date
                 returned
                 returned_date
                 duration
+                book {
+                    isbn
+                    title
+                    price
+                    quantity
+                    publisher_id
+                    publisher {
+                        id
+                        name
+                        year_publication
+                    }
+                }
             }
         }
     `
 
     const response = await client.query({ query: query})
+    console.log(response.data)
     return response.data.allCheckedOut
 })
 

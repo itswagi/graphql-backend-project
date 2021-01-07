@@ -17,20 +17,29 @@ export const CheckedOutList = () => {
     const renderedCheckedOuts = checkedouts.map( checkedout => 
     (
         <div className="item-excerpt" key={checkedout.id}>
-            <span>{checkedout.id}</span>
-            <span>{checkedout.book_isbn}</span>
-            <span>{checkedout.reader_id}</span>
-            <span>{checkedout.checkedout_date}</span>
-            <span>{checkedout.returned}</span>
-            <span>{checkedout.returned_date}</span>
-            <span>{checkedout.duration}</span>
+            <div>{checkedout.book.title}</div>
+            <div>{checkedout.book.publisher.name}</div>
+            <div>{checkedout.checkout_date}</div>
+            <div>{checkedout.duration}</div>
+            <div>{String(checkedout.returned)}</div>
+            <div>{checkedout.returned_date}</div>
         </div>
     )
     )
 
     return (
+        
         <div className="item-list">
+            <div className="item-header">
+                <div>Title</div>
+                <div>Publisher</div>
+                <div>Checked Out Date</div>
+                <div>Duration</div>
+                <div>Returned</div>
+                <div>Returned Date</div>
+            </div>
             {renderedCheckedOuts}
         </div>
+        
     )
 }
