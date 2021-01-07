@@ -13,7 +13,7 @@ function getUserId(req, authToken) {
       const authHeader = req.headers.authorization;
       if (authHeader) {
         const token = authHeader.replace('Bearer ', '');
-        if(token === 'Bearer')
+        if(token === 'null')
           return null
         if (!token) {
           throw new ApolloError('No token found');

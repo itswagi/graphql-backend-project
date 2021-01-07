@@ -65,7 +65,7 @@ const allCheckedOut = async (parent, args, context) => {
     try{
         const { userId } = context
         if (!userId){
-            throw new AuthenticationError('Please Login')
+            throw new AuthenticationError('Please Login!')
         }
         return await context.prisma.checkedOut.findMany({
             include: {

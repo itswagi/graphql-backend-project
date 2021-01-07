@@ -39,6 +39,10 @@ const server = new ApolloServer({
               : null
         };
     },
+    formatError: (err) => {
+        console.log(err)
+        return err
+    },
     introspection: true,
     playground: true,
     // debug: false
