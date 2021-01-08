@@ -16,6 +16,7 @@ model Books {
   price Float
   summary String
   quantity Int
+  year_publication Int?
   publisher Publishers? @relation(fields: [publisher_id], references:[id])
   publisher_id Int?
   checkedout CheckedOut[]
@@ -25,7 +26,6 @@ model Publishers {
   id Int @id @default(autoincrement())
   name String
   writer String
-  year_publication Int?
   books Books[]
 }
 

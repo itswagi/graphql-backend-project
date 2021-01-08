@@ -3,13 +3,15 @@ type Books {
         title: String
         price: Float
         quantity: Int
+        summary: String
+        year_publication: Int
         publisher_id: Int
         publisher: Publishers!
 }
 type Publishers {
     id: Int!
     name: String
-    year_publication: Int
+    writer: String
     books: [Books!]!
 }
 type Readers {
@@ -19,6 +21,8 @@ type Readers {
     password: String
     address: String
     phone: String
+    createdAt: Date
+    role: String
 }
 type CheckedOut {
     id: Int!
