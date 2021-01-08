@@ -5,9 +5,11 @@ CREATE TYPE "Role" AS ENUM ('USER', 'ADMIN');
 CREATE TABLE "Books" (
 "isbn" SERIAL,
     "title" TEXT NOT NULL,
+    "writer" TEXT NOT NULL,
     "price" DECIMAL(65,30) NOT NULL,
     "summary" TEXT NOT NULL,
     "quantity" INTEGER NOT NULL,
+    "year_publication" INTEGER,
     "publisher_id" INTEGER,
 
     PRIMARY KEY ("isbn")
@@ -17,8 +19,6 @@ CREATE TABLE "Books" (
 CREATE TABLE "Publishers" (
 "id" SERIAL,
     "name" TEXT NOT NULL,
-    "writer" TEXT NOT NULL,
-    "year_publication" INTEGER,
 
     PRIMARY KEY ("id")
 );

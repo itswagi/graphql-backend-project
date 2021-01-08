@@ -1,6 +1,7 @@
 type Books {
     isbn: Int!
     title: String
+    writer: String
     price: Float
     quantity: Int
     summary: String
@@ -11,7 +12,6 @@ type Books {
 type Publishers {
     id: Int!
     name: String
-    writer: String
     books: [Books!]!
 }
 type Readers {
@@ -21,7 +21,7 @@ type Readers {
     password: String
     address: String
     phone: String
-    createdAt: Date
+    createdAt: String
     role: String
 }
 type CheckedOut {
@@ -38,7 +38,7 @@ type CheckedOut {
 
 type AuthPayload {
     token: String
-    reader: Readers
+    user: Readers
 }
 
 type Query {

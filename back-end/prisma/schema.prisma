@@ -13,6 +13,7 @@ generator client {
 model Books {
   isbn  Int @id @default(autoincrement())
   title String
+  writer String
   price Float
   summary String
   quantity Int
@@ -25,7 +26,6 @@ model Books {
 model Publishers {
   id Int @id @default(autoincrement())
   name String
-  writer String
   books Books[]
 }
 
