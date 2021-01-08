@@ -1,12 +1,12 @@
 type Books {
-        isbn: Int!
-        title: String
-        price: Float
-        quantity: Int
-        summary: String
-        year_publication: Int
-        publisher_id: Int
-        publisher: Publishers!
+    isbn: Int!
+    title: String
+    price: Float
+    quantity: Int
+    summary: String
+    year_publication: Int
+    publisher_id: Int
+    publisher: Publishers!
 }
 type Publishers {
     id: Int!
@@ -55,12 +55,12 @@ type Mutation {
     signup(email: String!, password: String!, name: String!, address:String!, phone: String!): AuthPayload
     login(email: String!, password: String!): AuthPayload
 
-    createBook(title: String!, price: Float, publisher_id: Int, quantity: Int): Books
-    updateBook(isbn: Int!, publisher_id: Int, title: String, price: Float, quantity: Int): Books
+    createBook(title: String!, price: Float, summary: String!, publisher_id: Int!, quantity: Int, year_publication: Int!): Books
+    updateBook(isbn: Int!, publisher_id: Int, title: String, summary: String, price: Float, quantity: Int, year_publication: Int!): Books
     deleteBook(isbn: Int!): Books
 
-    createPublisher(name: String!, year_publication: Int!): Publishers
-    updatePublisher(id: Int!, name: String, year_publication: Int): Publishers
+    createPublisher(name: String!, writer: String): Publishers
+    updatePublisher(id: Int!, name: String, writer: String): Publishers
     deletePublisher(id: Int!): Publishers
 
     createCheckedOut(book_isbn: Int!, reader_id: Int!, checkout_date: String, returned: Boolean, returned_date: String, duration: Int): CheckedOut
